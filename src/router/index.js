@@ -2,6 +2,8 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Login from '../views/Login.vue'
 import Main from '../views/Main.vue'
+import Market from '../views/Market.vue'
+import Profile from '../views/Profile.vue'
 
 Vue.use(VueRouter)
 
@@ -14,6 +16,14 @@ const routes = [
     path: '/Main',
     name: 'Main',
     component: Main
+  }, {
+    path: '/Market',
+    name: 'Market',
+    component: Market
+  }, {
+    path: 'Profile',
+    name: 'Profile',
+    component: Profile
   }
 ]
  

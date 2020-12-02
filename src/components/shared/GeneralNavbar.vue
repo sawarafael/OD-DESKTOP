@@ -16,7 +16,7 @@
         >        
         </q-img></q-tab>  
         <q-tab name="tab3" icon="fas fa-bell" />
-        <q-tab name="tab4" icon="fas fa-dollar-sign" />
+        <q-tab  name="tab4" icon="fas fa-dollar-sign" />
         <q-tab name="tab5" icon="fas fa-cogs" />
       </q-tabs>
     </q-toolbar>
