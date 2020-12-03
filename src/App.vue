@@ -1,8 +1,6 @@
 <template>
 
-
-<Market></Market>
-
+<Main></Main>
 
 </template>
 
@@ -11,6 +9,7 @@
 import Login from './views/Login'
 import Main from './views/Main.vue'
 import Market from './views/Market.vue'
+import Profile from './views/Profile.vue'
 
 export default {
   name: 'LayoutDefault',
@@ -18,7 +17,8 @@ export default {
   components: {
     Login,
     Main,
-    Market
+    Market,
+    Profile
   }
 
 }
