@@ -13,7 +13,9 @@
           <q-menu>
           <q-list style="min-width: 100px">
             <q-item clickable v-close-popup>
-              <q-item-section>{{ NewRequestFriend }} enviou um pedido de Amizade para Você! <q-btn label="Aceitar" @click="" /><q-btn label="Recusar" /> </q-item-section>
+                <q-item-section>{{ NewRequestFriends }} quer ser seu amigo(a)! 
+                  <q-btn @click="acceptNewRequestFriends()" label="aceitar" /> 
+                  <q-btn @click="refuseNewRequestFriends()" label="recusar" /></q-item-section>
             </q-item>
           </q-list>
           </q-menu>
@@ -145,6 +147,7 @@ import Axios from 'axios'
 
  const dataauth = localStorage.getItem("nJKgfIOlWjeIKwR50FIBvb9-J547BANhdQPDeKumDUM")
  const id = localStorage.getItem("hDzseX436jkUeD99D7q3st3ZXwpAo5WIXBsspqm1nng")
+ const idFriend = localStorage.getItem("idFriend")
 
 export default {
     data () {
@@ -168,9 +171,8 @@ export default {
 
       friendAvatar: '',
       friendUsername: '',
-
-      notifications: false,
-      NewRequestFriend: {  }
+      
+      NewRequestFriends: '',
     }
   },
 
@@ -267,22 +269,67 @@ export default {
           const friendStatusRequest = respF.data.user_friends
           const userRequested = respF.data.id_user
 
-          console.log(respF)
-
           friendStatusRequest.forEach(userFriendData => {  
-            
-            console.log(userFriendData, userRequested)
           
-          
-          
-          });
+            axios.get('http://localhost:3000/users/normal/dataview/id', {
+            headers: {
+              authorization: dataauth
+            },
+            params: {
+              id: userFriendData.idFriend
+            }
+          }).then((respD) => {              
+              
+              const verfiyId = respD.data.user_view.user_view_id    
+              const userFriendName = respD.data.user_view.user_view_username 
 
-          
+          if(userFriendData.status == 0) {
+               if(verfiyId != id) {
+                this.NewRequestFriends = userFriendName
+                localStorage.setItem("idFriend", verfiyId)
+              } else {
+                this.NewRequestFriends = 'Sem requisições ou pedidos de amizade ainda...'
+              }
+          } else {
+              this.NewRequestFriends = 'Sem requisições ou pedidos de amizade ainda...'
+          }
+             
+
+          }).catch((err) => {
+            console.log(err)
+          })
+          })
       }).catch((err) => {
         console.log(err)
       })
+    },
+
+    acceptNewRequestFriends(){
+
+      const requestAccept = {        
+        action: `O Usuário ID ${id} aceitou a requisição de amizade do Usuário ID ${idFriend}`,
+        id1: id,
+        id2: idFriend
+      }
+
+      axios.patch(`http://localhost:3000/users/normal/friend/update/1`, {
+        action: requestAccept.action,
+        id1: requestAccept.id1,
+        id2: requestAccept.id2
+      }, { headers: {authorization: dataauth} }).then((resp) => {
+        console.log("Usuário foi aceitado!");
+      }).catch((err) => {
+        console.log(err)
+      })
+        
+    },
+
+    refuseNewRequestFriends(){
+
+        console.log("recusado!")
     }
   }
+          
 
 
 
