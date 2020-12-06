@@ -172,7 +172,6 @@ export default {
         const dataauth = localStorage.getItem("nJKgfIOlWjeIKwR50FIBvb9-J547BANhdQPDeKumDUM")
         const id = localStorage.getItem("hDzseX436jkUeD99D7q3st3ZXwpAo5WIXBsspqm1nng")
 
-
             axios.get('http://localhost:3000/users/normal/user/post/view/id', {
                 headers: {
                     "content-type": "application/json",

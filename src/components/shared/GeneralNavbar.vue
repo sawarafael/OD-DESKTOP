@@ -9,9 +9,39 @@
     <q-tabs shrink stretch>
       <q-tab name="friends" @click="friends = true" label="Amigos" />
         <q-tab name="user" @click="card = true">{{ username }}</q-tab>  
-        <q-tab name="notes" icon="fas fa-bell" />
+        <q-tab name="notes" @click="showRequestFriends" icon="fas fa-bell">
+          <q-menu>
+          <q-list style="min-width: 100px">
+            <q-item clickable v-close-popup>
+              <q-item-section>{{ NewRequestFriend }} enviou um pedido de Amizade para Você! <q-btn label="Aceitar" @click="" /><q-btn label="Recusar" /> </q-item-section>
+            </q-item>
+          </q-list>
+          </q-menu>
+        </q-tab>
         <q-tab  name="market" icon="fas fa-dollar-sign" />
-        <q-tab name="config" icon="fas fa-cogs" />
+        <q-tab name="config" icon="fas fa-cogs">
+         <q-menu>
+          <q-list style="min-width: 100px">
+            <q-item clickable v-close-popup>
+              <q-item-section>Resolução de Tela</q-item-section>
+            </q-item>
+            <q-item clickable v-close-popup>
+              <q-item-section>Reportar Abuso</q-item-section>
+            </q-item>
+            <q-separator />
+            <q-item clickable v-close-popup>
+              <q-item-section>Informar Bug</q-item-section>
+            </q-item>
+            <q-item clickable v-close-popup>
+              <q-item-section>Encerrar Sessão</q-item-section>
+            </q-item>
+            <q-item clickable v-close-popup>
+              <q-item-section>Ajuda &amp; Feedback</q-item-section>
+            </q-item>
+          </q-list>
+        </q-menu>
+        </q-tab>
+
      </q-tabs>
     </q-toolbar>
 
@@ -21,9 +51,12 @@
         <q-card-section class="items-center no-wrap">
             <div>
               Amigos Onlines
-              <q-btn label="adicionar amigo" @click="addFriend = true" />
-              <div>
-                amigo1
+              <q-btn label="adicionar amigo" @click="addFriends = true" />
+              <div class="row">
+                <q-avatar>
+                  <img v-bind:src="friendAvatar" alt="">
+                </q-avatar>
+                <p>{{ friendUsername }}</p>
               </div>
             </div>
             <hr>
@@ -37,14 +70,15 @@
       </q-card>
     </q-dialog>  
 
-    <q-dialog v-model="addFriend" transition-show="scale" transition-hide="scale">
+    <q-dialog v-model="addFriends" transition-show="scale" transition-hide="scale">
       <q-card class="bg-primary text-white" style="width: 300px">
         <q-card-section>
           <div class="text-h6">Adicionar Amigo</div>
             <div class="q-gutter-md row">
-              <input v-model="searchFriend" type="text" label="Pesquisar pelo User">
+              <q-input label="Pesquisar pelo nome do usuário" v-model="searchFriendUsername" />
+              <q-input label="Pesquisar pelo ID do usuário" v-model="searchFriendID" />
             </div>
-            <q-btn v-model="addFriend" label="Adicionar Usuário"/>
+            <q-btn @click="encontrar()" label="Adicionar Usuário"/>
         </q-card-section>    
       </q-card>
     </q-dialog>
@@ -109,7 +143,8 @@
 <script>
 import Axios from 'axios'
 
-const users = [ 'karatian', 'bernah', 'tursman', 'eclair' ]
+ const dataauth = localStorage.getItem("nJKgfIOlWjeIKwR50FIBvb9-J547BANhdQPDeKumDUM")
+ const id = localStorage.getItem("hDzseX436jkUeD99D7q3st3ZXwpAo5WIXBsspqm1nng")
 
 export default {
     data () {
@@ -122,20 +157,24 @@ export default {
       avatar: '',
 
       bio: '',
-      tags: 'consertarCoisas',
+      tags: 'tag1, tag2, tag3',
 
       
       card: false,
       friends: false,
-      searchFriend: ''
+      searchFriendUsername: '',
+      searchFriendID: '',
+      addFriends: false,
+
+      friendAvatar: '',
+      friendUsername: '',
+
+      notifications: false,
+      NewRequestFriend: {  }
     }
   },
 
-  mounted() {
-
-    const dataauth = localStorage.getItem("nJKgfIOlWjeIKwR50FIBvb9-J547BANhdQPDeKumDUM")
-    const id = localStorage.getItem("hDzseX436jkUeD99D7q3st3ZXwpAo5WIXBsspqm1nng")
-
+  mounted() {   
     
     axios.get('http://localhost:3000/users/normal/dataview/id', {
       headers: {
@@ -147,45 +186,105 @@ export default {
         id: id
       }
     }).then((resp) => {
-      const usern = resp.data.user_view.user_view_username;
-      this.username = usern;
-      localStorage.setItem("usern", usern);
 
-      if(resp.data.user_role.user_is_free === true){
+      const userPerfil = {
+        username    : resp.data.user_view.user_view_username,
+        role        : [resp.data.user_role.user_is_free, resp.data.user_role.user_is_premium, resp.data.user_role.user_is_mod, resp.data.user_role.user_is_adm],
+        level       : resp.data.user_data.user_data_lvl,
+        bio         : resp.data.user_data.user_data_bio,
+        avatar      : resp.data.user_data.user_data_avatar,
+        cover       : resp.data.user_data.user_data_coverPage
+      }     
+      
+      this.username   = userPerfil.username;
+      this.bio        = userPerfil.bio;
+      this.level      = userPerfil.level;
+      this.avatar     = userPerfil.avatar;
+      this.coverPage  = userPerfil.cover;
+
+      localStorage.setItem("usern", userPerfil.username);
+      localStorage.setItem("bio", userPerfil.bio);
+      localStorage.setItem("avatar", userPerfil.avatar);
+      localStorage.setItem("cover", userPerfil.cover);
+
+      if(userPerfil.role[0] === true){
         this.role = 'User'
-        const userrf = resp.data.user_role.user_is_free;
         localStorage.setItem("userr", "User") 
-      } else if(resp.data.user_role.user_is_premium === true){
+      } else if(userPerfil.role[1] === true){
         this.role = 'Premium'
         const userrp = resp.data.user_role.user_is_premium;
         localStorage.setItem("userr", "Premium") 
-      } else if(resp.data.user_role.user_is_mod === true){
+      } else if(userPerfil.role[2] === true){
         this.role = 'Mod' 
-        const userrm = resp.data.user_role.user_is_mod;
         localStorage.setItem("userr", "Moderador(a)") 
-      } else if(resp.data.user_role.user_is_adm){
+      } else if(userPerfil.role[3] === true){
         this.role = 'Adm'
-        const userra = resp.data.user_role.user_is_adm;
         localStorage.setItem("userr", "Administrador(a)") 
       }
-      this.level = resp.data.user_data.user_data_lvl;
-
-      const bio = resp.data.user_data.user_data_bio;
-      this.bio = bio;
-      localStorage.setItem("bio", bio)
-
-      const avatar = resp.data.user_data.user_data_avatar;
-      this.avatar = avatar;
-      localStorage.setItem("avatar", avatar)
-
-      const cover = resp.data.user_data.user_data_coverPage;
-      this.coverPage = cover;
-      localStorage.setItem("cover", cover)
-
     }).catch((err) => {
-      console.log("Erro" + err)
+      console.log(err)
     })
+
+
+
+    
   },
   
+
+  methods: {
+
+    encontrar() {
+
+      var search = {
+        id1       : id,
+        id2       : this.searchFriendID,
+        usernamer : this.searchFriendUsername,
+        action    : `O Usuário ID ${id} enviou uma requisição de amizade para o Usuário ID ${this.searchFriendID}`
+      }
+
+      axios.post('http://localhost:3000/users/normal/friend/request', search, {
+        headers: { authorization: localStorage.getItem("nJKgfIOlWjeIKwR50FIBvb9-J547BANhdQPDeKumDUM")}
+      })
+      .then((resp) => {
+        console.log(resp)
+      }).catch((err) => {
+        console.log(err)
+      })
+    },
+
+
+    showRequestFriends() {      
+      axios.get('http://localhost:3000/users/normal/friend/view/id', {
+        headers: {
+          "content-type": "application/json",
+          authorization: dataauth 
+        },
+        params: {
+          id: id
+        }
+      }).then((respF) => {
+          
+          const friendStatusRequest = respF.data.user_friends
+          const userRequested = respF.data.id_user
+
+          console.log(respF)
+
+          friendStatusRequest.forEach(userFriendData => {  
+            
+            console.log(userFriendData, userRequested)
+          
+          
+          
+          });
+
+          
+      }).catch((err) => {
+        console.log(err)
+      })
+    }
+  }
+
+
+
 }
 </script>

@@ -81,6 +81,9 @@ export default {
       tags: '[tag1, tag2, tag3]',
       slide: 'style',
       lorem: 'Lorem ipsum dolor, sit amet consectetur adipisicing elit. Itaque voluptatem totam, architecto cupiditate officia rerum, error dignissimos praesentium libero ab nemo.'
+
+
+    
     }
   }
 
