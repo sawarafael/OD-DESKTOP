@@ -1,6 +1,6 @@
 <template>
 
-<Profile></Profile>
+<Login />
 
 </template>
 
@@ -10,6 +10,8 @@ import Login from './views/Login'
 import Main from './views/Main.vue'
 import Market from './views/Market.vue'
 import Profile from './views/Profile.vue'
+import Groups from './views/Groups.vue'
+import Library from './views/Library.vue'
 
 export default {
   name: 'LayoutDefault',
@@ -18,7 +20,9 @@ export default {
     Login,
     Main,
     Market,
-    Profile
+    Profile,
+    Groups,
+    Library
   }
 
 }

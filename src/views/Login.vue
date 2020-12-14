@@ -61,17 +61,26 @@ export default {
         password : this.password
       }
      
-     axios.post('http://localhost:3000/users/normal/signin', credentials)
-     .then((resp) => {      
-       var token = resp.data.token;
-       var id = resp.data.id
+     //https://31.220.52.152:54213/
 
-       localStorage.setItem("hDzseX436jkUeD99D7q3st3ZXwpAo5WIXBsspqm1nng", id);
-       localStorage.setItem("nJKgfIOlWjeIKwR50FIBvb9-J547BANhdQPDeKumDUM", token)
+     //nota: O Chromium não vai permitir fazer request pois 
+     //como o SSL não é autentificado por um terceiro, ele acredita que seja
+     //um site hostil, então para trabalhar não pode usar o desktop e sim web desse app
+     //npm run serve ==> website
+     //npm run electron:serve ==> desktop
+
+     axios.post('url', credentials, {
+       httpsAgent: false
+     })
+     .then((resp) => {      
+       
+       //Sempre use o console para ver que tipos de dados está lhe retornando
+       //console.log(resp.data)
 
      }).catch((err) => {
        console.log("Não passou" + err)
      })
+
     }
   }
 }

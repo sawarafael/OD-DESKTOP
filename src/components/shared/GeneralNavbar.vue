@@ -1,6 +1,7 @@
 <template>
     
  <div class="q-pa-md">
+    <div v-for="user in users" v-bind:key="user.id">
     <q-toolbar class="bg-primary text-white shadow-2 rounded-borders">
       <q-btn flat label="one destiny" />
       <q-btn flat label="Biblioteca" />
@@ -8,7 +9,7 @@
 
     <q-tabs shrink stretch>
       <q-tab name="friends" @click="friends = true" label="Amigos" />
-        <q-tab name="user" @click="card = true">{{ username }}</q-tab>  
+        <q-tab name="user" @click="card = true">{{ user.username }}</q-tab>  
         <q-tab name="notes" @click="showRequestFriends" icon="fas fa-bell">
           <q-menu>
           <q-list style="min-width: 100px">
@@ -63,9 +64,9 @@
             </div>
             <hr>
             <div>
-              Chats de Conversa
+              Grupos de Conversa
               <div>
-                Chat1
+                Botão para levar o usuário para a tela de grupos de conversa
               </div>
             </div>
         </q-card-section>
@@ -80,7 +81,7 @@
               <q-input label="Pesquisar pelo nome do usuário" v-model="searchFriendUsername" />
               <q-input label="Pesquisar pelo ID do usuário" v-model="searchFriendID" />
             </div>
-            <q-btn @click="encontrar()" label="Adicionar Usuário"/>
+            <q-btn @click="findFriend()" label="Adicionar Usuário"/>
         </q-card-section>    
       </q-card>
     </q-dialog>
@@ -92,7 +93,7 @@
         <div class="absolute-center">        
           <div class="row">
             <div class="col-12.col-md text-h6">
-              {{ username }}
+              {{ user.username }}
             </div>
           <div class="col-12.col-md">            
             <q-item-section>
@@ -104,7 +105,7 @@
             </q-item-section>
           </div>
         <div class="col-12.col-md text-right">
-          Level {{ level }}
+          Level {{ user.userdatum.level }}
         </div>
           </div>
         </div>
@@ -122,10 +123,10 @@
 
         <q-card-section class="q-pt-none">
           <div class="text-h5">
-            {{ bio }}
+            {{ user.userdatum.bio }}
           </div>
-          <div class="text-caption text-h6 text-grey">
-            {{ tags }}
+          <div class="text-caption text-h6 text-grey" v-for="tag in tags" v-bind:key="tag.id">
+            {{ tag.title }}
           </div>
         </q-card-section>
 
@@ -137,6 +138,7 @@
       </q-card>
     </q-dialog>
   </div>
+ </div>
      
 
 </template>
@@ -153,14 +155,14 @@ export default {
     data () {
     return {
       user: '',
-      username: '',
+      users: { },
       role: '',
       level: '',
       coverPage: '',
       avatar: '',
 
       bio: '',
-      tags: 'tag1, tag2, tag3',
+      tags: {  },
 
       
       card: false,
@@ -178,7 +180,7 @@ export default {
 
   mounted() {   
     
-    axios.get('http://localhost:3000/users/normal/dataview/id', {
+    axios.get('http://31.220.52.152:54213/users/normal/dataview/id', {
       headers: {
         "content-type": "application/json",
         authorization: 
@@ -189,16 +191,17 @@ export default {
       }
     }).then((resp) => {
 
+      console.log(resp.data.userd)
+
       const userPerfil = {
-        username    : resp.data.user_view.user_view_username,
-        role        : [resp.data.user_role.user_is_free, resp.data.user_role.user_is_premium, resp.data.user_role.user_is_mod, resp.data.user_role.user_is_adm],
-        level       : resp.data.user_data.user_data_lvl,
-        bio         : resp.data.user_data.user_data_bio,
-        avatar      : resp.data.user_data.user_data_avatar,
-        cover       : resp.data.user_data.user_data_coverPage
+        username    : resp.data.userd.map(x => x.username),
+        level       : resp.data.userd.map(x => x.userdatum.level),
+        bio         : resp.data.userd.map(x => x.userdatum.bio),
+        avatar      : resp.data.userd.map(x => x.userdatum.avatar),
+        cover       : resp.data.userd.map(x => x.userdatum.coverPage)
       }     
-      
-      this.username   = userPerfil.username;
+
+      this.users      = resp.data.userd;
       this.bio        = userPerfil.bio;
       this.level      = userPerfil.level;
       this.avatar     = userPerfil.avatar;
@@ -209,51 +212,17 @@ export default {
       localStorage.setItem("avatar", userPerfil.avatar);
       localStorage.setItem("cover", userPerfil.cover);
 
-      if(userPerfil.role[0] === true){
-        this.role = 'User'
-        localStorage.setItem("userr", "User") 
-      } else if(userPerfil.role[1] === true){
-        this.role = 'Premium'
-        const userrp = resp.data.user_role.user_is_premium;
-        localStorage.setItem("userr", "Premium") 
-      } else if(userPerfil.role[2] === true){
-        this.role = 'Mod' 
-        localStorage.setItem("userr", "Moderador(a)") 
-      } else if(userPerfil.role[3] === true){
-        this.role = 'Adm'
-        localStorage.setItem("userr", "Administrador(a)") 
-      }
     }).catch((err) => {
       console.log(err)
     })
-
-
-
-    
-  },
-  
+   
+  },  
 
   methods: {
 
-    encontrar() {
+    findFriend() {
 
-      var search = {
-        id1       : id,
-        id2       : this.searchFriendID,
-        usernamer : this.searchFriendUsername,
-        action    : `O Usuário ID ${id} enviou uma requisição de amizade para o Usuário ID ${this.searchFriendID}`
-      }
-
-      axios.post('http://localhost:3000/users/normal/friend/request', search, {
-        headers: { authorization: localStorage.getItem("nJKgfIOlWjeIKwR50FIBvb9-J547BANhdQPDeKumDUM")}
-      })
-      .then((resp) => {
-        console.log(resp)
-      }).catch((err) => {
-        console.log(err)
-      })
     },
-
 
     showRequestFriends() {      
       axios.get('http://localhost:3000/users/normal/friend/view/id', {
@@ -328,10 +297,7 @@ export default {
 
         console.log("recusado!")
     }
-  }
-          
-
-
+  }      
 
 }
 </script>

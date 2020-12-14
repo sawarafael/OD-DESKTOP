@@ -63,7 +63,8 @@ export default {
 
   mounted() {
 
-    axios.get('http://localhost:3000/articles/view/all').then((resp) => {
+    /*
+    axios.get('http://51.220.52.152:54213/view/all').then((resp) => {
     
     this.title = resp.data.data[1].title
     this.lorem = resp.data.data[1].body
@@ -71,7 +72,7 @@ export default {
     }).catch((err) => {
       console.log(err)
     })
-
+      */
   },
 }
 </script>

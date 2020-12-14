@@ -14,51 +14,14 @@
           class="text-teal"
         >
           <q-tab><q-img
-          src="https://cdn3.dualshockers.com/wp-content/uploads/2020/04/FFVIIR-tifa-ds1-1340x1340.jpg"
+          v-bind:src="avatar"
           style="width: 220px"
           rounded-borders
         >
           <div class="absolute-bottom text-subtitle1 text-center">
-            <p>Final Fantasy 7</p>
-            <p>Fantasia Aventura</p>
+            <p>{{ username }}</p>
+            <p>{{ bio }}</p>
             
-          </div>
-        </q-img>
-          </q-tab>
-          <q-tab>
-          <q-img
-          src="https://pbs.twimg.com/media/C3zyS2DWEAE1aHK.jpg"
-          style="width: 220px"
-          rounded-borders
-        >
-          <div class="absolute-bottom text-subtitle1 text-center">
-            <p>Nier Automata</p>
-            <p>Aventura Apocalipse</p>
-          </div>
-        </q-img>
-          </q-tab>
-          <q-tab>
-          <q-img
-          src="https://i.pinimg.com/originals/83/d1/14/83d11486b6af10b679c8f55cbc0fd51c.jpg"
-          style="width: 220px"
-          rounded-borders
-        >
-          <div class="absolute-bottom text-subtitle1 text-center">
-            <p>Fate Stay Night</p>
-            <p>Battle Royale</p>
-          </div>
-        </q-img>
-          </q-tab>
-
-          <q-tab>
-          <q-img
-          src="https://cdn140.picsart.com/330464299061201.jpg?type=webp&to=crop&r=256"
-          style="width: 220px"
-          rounded-borders
-        >
-          <div class="absolute-bottom text-subtitle1 text-center">
-            <p>Heh</p>
-            <p>Taverna</p>
           </div>
         </q-img>
           </q-tab>
@@ -75,8 +38,49 @@ export default {
     data () {
         return {
             tab: '',
-            splitterModel: 50
+            splitterModel: 50,
+
+            friendDs: {},
+            friendVs: {}
+
         }
+    },
+
+    mounted() {
+      
+
+     axios.get('http://localhost:3000/users/normal/friend/view/all/id', {
+        headers: {
+            authorization: dataauth
+        },
+        params: {
+            id: id
+        }
+    }).then((resp) => {
+    
+        this.friendDs = resp.data.userd
+        const idFriends = resp.data.userd.map(x => x.id)
+
+        console.log(idFriends)
+        
+        axios.get('http://localhost:3000/users/normal/friend/view/id', {
+            headers: {
+                authorization: dataauth
+            },
+            params: {
+                ids: idFriends
+            }
+        }).then((res) => {
+
+            const idUsers = res.data.users
+            
+            console.log(res.data.users)
+
+            this.friendVs = idUsers
+        })
+    })
+
     }
+
 }
 </script>

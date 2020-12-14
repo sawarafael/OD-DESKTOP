@@ -4,6 +4,8 @@ import Login from '../views/Login.vue'
 import Main from '../views/Main.vue'
 import Market from '../views/Market.vue'
 import Profile from '../views/Profile.vue'
+import Groups from '../views/Groups.vue'
+import Library from '../views/Library.vue'
 
 Vue.use(VueRouter)
 
@@ -21,9 +23,19 @@ const routes = [
     name: 'Market',
     component: Market
   }, {
-    path: 'Profile',
+    path: '/Profile',
     name: 'Profile',
     component: Profile
+  },
+  {
+    path: '/Groups',
+    name: 'Groups',
+    component: Groups
+  },
+  {
+    path: 'Library',
+    name: '/Library',
+    component: Library
   }
 ]
  

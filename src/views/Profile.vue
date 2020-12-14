@@ -58,12 +58,14 @@
                 <div>
                     Amigos:
 
-                    <div>
+                    <div v-for="friendD in friendDs" v-bind:key="friendD.id">
                         <q-avatar size="120px">
-                            <img v-bind:src="friendAvatar" alt="">
+                            <img v-bind:src="friendD.avatar">
                         </q-avatar>
-                        <p>ID:#{{ friendId }}</p>
-                        <h6>{{ friendName }}</h6>
+                        <p>{{ friendD.id }}</p>
+                        <div v-for="friendV in friendVs" v-bind:key="friendV.id">
+                        {{ friendV.username }}
+                        </div>
                     </div>
                 </div>
             </div>
@@ -118,14 +120,14 @@ export default {
             usernameupd: '',
             bioupd: '',
             avatarupd: '',  
-            coverupd: '',   
+            coverupd: '',    
 
             prompt: false,
             address: '',
 
-            friendAvatar: '',
-            friendId: '',
-            friendName: ''
+            
+            friendDs: {   },
+            friendVs: {   }
         }
     },
 
@@ -144,7 +146,7 @@ export default {
                 coverPage: this.coverupd
             }
 
-            axios.patch(`http://localhost:3000/users/normal/datachange/${update.id}`, {
+            axios.patch(`http://51.220.52.152:54213/users/normal/datachange/${update.id}`, {
                 avatar: update.avatar,
                 bio: update.bio,
                 coverPage: update.coverPage
@@ -172,72 +174,13 @@ export default {
                 alert("Deu erro em adicionar mais uma postagem pelo usuário!")
             })
         }
-
-        
   },
-
 
     mounted () {
 
         const dataauth = localStorage.getItem("nJKgfIOlWjeIKwR50FIBvb9-J547BANhdQPDeKumDUM")
         const id = localStorage.getItem("hDzseX436jkUeD99D7q3st3ZXwpAo5WIXBsspqm1nng")
-
-    //Visualização dos Posts do Usuário
-    axios.get('http://localhost:3000/users/normal/user/post/view/id', {
-        headers: {
-        "content-type": "application/json",
-        authorization: dataauth
-        },
-        params: {
-          id: id
-        }
-    }).then((resp) => {
-        this.posts = resp.data.user_posts
-    })
-
-    //Visualização dos Amigos do Usuário
-    axios.get('http://localhost:3000/users/normal/friend/view/id', {
-        headers: {
-          "content-type": "application/json",
-          authorization: dataauth 
-        },
-        params: {
-          id: id
-        }
-      }).then((respF) => {
-          
-          const friendStatus = respF.data.user_friends
-          const userRequested = respF.data.id_user
-
-          friendStatus.forEach(userFriendData => {  
-          
-            axios.get('http://localhost:3000/users/normal/dataview/id', {
-            headers: {
-              authorization: dataauth
-            },
-            params: {
-              id: userFriendData.idFriend
-            }
-          }).then((respD) => {              
-              
-              const verfiyId         = respD.data.user_view.user_view_id    
-              const userFriendName   = respD.data.user_view.user_view_username
-              const userFriendAvatar = respD.data.user_data.user_data_avatar
-            
-            console.log(verfiyId, userFriendName, userFriendAvatar)
-
-            if(userFriendData.status == 1) {
-                this.friendAvatar = userFriendAvatar
-                this.friendName = userFriendName
-                this.friendId = verfiyId
-            } else {
-                console.log("Sem amigos ainda...")
-            }          
-          })
-          })
-      }).catch((err) => {
-          console.log(err)
-      })      
+    
     } 
 }
 </script>
