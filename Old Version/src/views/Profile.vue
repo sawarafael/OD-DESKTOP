@@ -14,6 +14,7 @@
                 <img v-bind:src="avatar">
             </q-avatar>
         </div>
+        
         <div class="q-mt-xl col-12 text-h1">
             <div class="q-mt-xl">
                 <div class="q-mt-xl row text-capitalize">

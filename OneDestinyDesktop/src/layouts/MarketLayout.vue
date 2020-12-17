@@ -1,16 +1,17 @@
 <template>
-  <q-layout>
-      <GeneralNavbar />
+    <q-layout>
+        <GeneralNavbar />
     <q-page-container>
-      <router-view />
+        <router-view />
     </q-page-container>
-  </q-layout>
+    </q-layout>
 </template>
+
 <script>
 
 import GeneralNavbar from 'components/GeneralNavbar.vue'
 export default {
-  name: 'MainLayout',
+  name: 'MarketLayout',
   components: { GeneralNavbar }
 }
 </script>
