@@ -9,7 +9,6 @@
     
  
     <q-tabs
-          v-model="tab"
           vertical
           class="text-teal"
         >
@@ -37,7 +36,6 @@
 export default {
     data () {
         return {
-            tab: '',
             splitterModel: 50,
 
             friendDs: {},
