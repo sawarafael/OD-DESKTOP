@@ -16,7 +16,7 @@ if (process.env.PROD) {
 
 let mainWindow
 
-function createWindow () {
+function createWindow() {
   /**
    * Initial window options
    */
@@ -24,6 +24,7 @@ function createWindow () {
     width: 1700,
     height: 1000,
     useContentSize: true,
+    autoHideMenuBar: true,
     webPreferences: {
       // Change from /quasar.conf.js > electron > nodeIntegration;
       // More info: https://quasar.dev/quasar-cli/developing-electron-apps/node-integration
