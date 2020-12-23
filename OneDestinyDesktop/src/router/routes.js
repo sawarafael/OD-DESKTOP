@@ -1,10 +1,18 @@
 
 const routes = [
+
+  {
+    path: '/',
+    component: () => import('layouts/LoginLayout.vue'),
+    children: [
+      { path: '', component: () => import('pages/Login.vue') }
+    ]
+  },
   {
     path: '/Main',
     component: () => import('layouts/MainLayout.vue'),
     children: [
-      { path: '', component: () => import('pages/Main.vue') }
+      { path: 'main', component: () => import('pages/Main.vue') }
     ]
   },
 
@@ -12,7 +20,7 @@ const routes = [
     path: '/profile',
     component: () => import('layouts/ProfileLayout'),
     children: [
-      { path: '', component: () => import('pages/Profile.vue') }
+      { path: 'profile', component: () => import('pages/Profile.vue') }
     ]
   },
 
@@ -20,7 +28,7 @@ const routes = [
     path: '/library',
     component: () => import('layouts/LibraryLayout'),
     children: [
-      { path: '', component: () => import('pages/Library') }
+      { path: 'library', component: () => import('pages/Library') }
     ]
   },
 
@@ -28,7 +36,7 @@ const routes = [
     path: '/market',
     component: () => import('layouts/MarketLayout'),
     children: [
-      { path: '', component: () => import('pages/Market') }
+      { path: 'market', component: () => import('pages/Market') }
     ]
   },
   // Always leave this as last one,
