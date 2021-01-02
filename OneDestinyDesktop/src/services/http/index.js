@@ -1,4 +1,5 @@
 import axios from "axios";
+import Store from './../../store/index.js';
 
 const http = axios.create({
   baseURL: "http://31.220.52.152:54213/",
@@ -10,14 +11,14 @@ const http = axios.create({
 
 http.interceptors.request.use(
   function(config) {
-    const token = localStorage.getItem("token");
+    const token = Store.state.token;
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
     return config;
   },
-  function(erro) {
-    return Promise.reject(erro);
+  function(err) {
+    return Promise.reject(err);
   }
 );
 
