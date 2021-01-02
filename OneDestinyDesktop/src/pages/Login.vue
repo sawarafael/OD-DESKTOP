@@ -57,6 +57,7 @@
                 type="password"
                 label="Senha"
               />
+              <p class="alert alert-danger" v-if="mensagemErro">{{ mensagemErro }}</p>
               <q-btn
               unelevated
               class="full-width text-weight-light"
@@ -86,6 +87,7 @@ export default {
     return {
       slide: 1,
       user: {},
+      mensagemErro: ''
     };
   },
   methods: {
@@ -93,7 +95,9 @@ export default {
       this.$store.dispatch("auth/efetuarLogin", this.user).then(() => {
         this.$router.push({name: 'main'})
       }).catch((err) => {
-        console.log(err)
+        if (err.request.status === 401) {
+            this.mensagemErro = "Login ou senha inválido(s)!!!";
+          }
       });
     }
   }
