@@ -1,5 +1,5 @@
 import axios from "axios";
-import Store from './../../store/index.js';
+import Store from './../../store';
 
 const http = axios.create({
   baseURL: "http://31.220.52.152:54213/",
