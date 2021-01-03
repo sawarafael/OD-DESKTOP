@@ -42,7 +42,7 @@
       <div class="row">
         <q-card bordered class="q-pa-lg shadow-1">
           <q-card-section>
-            <q-form @submit.prevent="efetuarLogin()" class="q-gutter-md">
+            <q-form @submit.prevent="efetuarLogin" class="q-gutter-md">
               <q-input
                 filled
                 clearable
@@ -57,10 +57,8 @@
                 type="password"
                 label="Senha"
               />
-            </q-form>
-          </q-card-section>
-          <q-card-actions class="q-px-md">
-            <q-btn
+              <p class="alert alert-danger" v-if="mensagemErro">{{ mensagemErro }}</p>
+              <q-btn
               unelevated
               class="full-width text-weight-light"
               size="lg"
@@ -69,7 +67,8 @@
               label="login"
               type="submit"
             />
-          </q-card-actions>
+            </q-form>
+          </q-card-section>         
           <q-card-section class="text-center q-pa-none">
             <p class="text-grey-6">
               Não é cadastrado? <a class="text-indigo">Criar Conta</a>
@@ -87,22 +86,19 @@ export default {
   data() {
     return {
       slide: 1,
-      user: {
-        username: "",
-        password: ""
-      }
+      user: {},
+      mensagemErro: ''
     };
   },
   methods: {
     efetuarLogin() {
-      this.$http
-        .post("auth/login", this.user)
-        .then(response => {
-          console.log(response);
-          localStorage.setItem("token", response.data.access_token);
-          this.$router.push({ name: "main" });
-        })
-        .catch(erro => console.log(erro));
+      this.$store.dispatch("auth/efetuarLogin", this.user).then(() => {
+        this.$router.push({name: 'main'})
+      }).catch((err) => {
+        if (err.request.status === 401) {
+            this.mensagemErro = "Login ou senha inválido(s)!!!";
+          }
+      });
     }
   }
 };
