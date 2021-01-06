@@ -42,33 +42,32 @@
       <div class="row">
         <q-card bordered class="q-pa-lg shadow-1">
           <q-card-section>
-            <q-form @submit.prevent="efetuarLogin" class="q-gutter-md">
+            <q-form @submit.prevent="login" class="q-gutter-md">
               <q-input
                 filled
                 clearable
-                v-model="user.username"
+                v-model="username"
                 type="username"
                 label="Usuário"
               />
               <q-input
                 filled
                 clearable
-                v-model="user.password"
+                v-model="password"
                 type="password"
                 label="Senha"
               />
-              <p class="alert alert-danger" v-if="mensagemErro">{{ mensagemErro }}</p>
               <q-btn
-              unelevated
-              class="full-width text-weight-light"
-              size="lg"
-              color="indigo-10"
-              icon="check"
-              label="login"
-              type="submit"
-            />
+                unelevated
+                class="full-width text-weight-light"
+                size="lg"
+                color="indigo-10"
+                icon="check"
+                label="login"
+                type="submit"
+              />
             </q-form>
-          </q-card-section>         
+          </q-card-section>
           <q-card-section class="text-center q-pa-none">
             <p class="text-grey-6">
               Não é cadastrado? <a class="text-indigo">Criar Conta</a>
@@ -86,20 +85,18 @@ export default {
   data() {
     return {
       slide: 1,
-      user: {},
-      mensagemErro: ''
+      username: "",
+      password: ""
     };
   },
   methods: {
-    efetuarLogin() {
-      this.$store.dispatch("auth/efetuarLogin", this.user).then(() => {
-        this.$router.push('/Main')
-      }).catch((err) => {
-        if (err) {
-            console.log(err)
-            // this.mensagemErro = "Login ou senha inválido(s)!!!";
-          }
-      });
+    login: function() {
+      const username = this.username;
+      const password = this.password;
+      this.$store
+        .dispatch("login", { username, password })
+        .then(() => this.$router.push("/main"))
+        .catch(err => console.log(err));
     }
   }
 };
