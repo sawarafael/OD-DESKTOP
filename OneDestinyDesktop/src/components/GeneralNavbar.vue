@@ -2,8 +2,8 @@
 <div class="q-pa-md">
   <div>
     <q-toolbar class="bg-primary text-white shadow-2 rounded-borders">
-      <q-btn flat label="Aventuras" @click="$router.push('/Main')" />
-      <q-btn flat label="Biblioteca" @click="$router.push('/Library')"/>
+      <q-btn flat label="Aventuras" @click="$router.push('/Main/main')" />
+      <q-btn flat label="Biblioteca" @click="$router.push('/Library/library')"/>
       <q-space />
       <q-tabs shrink stretch>
         <q-tab name="friends" label="Amigos" />
@@ -17,7 +17,7 @@
             </q-list>
           </q-menu>
         </q-tab>
-        <q-tab name="market" @click="$router.push('/Market')" icon="payments"/>
+        <q-tab name="market" @click="$router.push('/Market/market')" icon="payments"/>
         <q-tab name="config" icon="settings">
           <q-menu>
             <q-item>
@@ -63,7 +63,7 @@
         <q-separator />
         <q-card-actions align="right">
           <q-btn v-close-popup flat color="primary" label="Fechar" />
-          <q-btn v-close-popup flat color="primary" @click="$router.push('/profile')" label="Abrir Perfil Completo" />
+          <q-btn v-close-popup flat color="primary" @click="$router.push('/profile/profile')" label="Abrir Perfil Completo" />
         </q-card-actions>
       </q-card>
     </q-dialog>
