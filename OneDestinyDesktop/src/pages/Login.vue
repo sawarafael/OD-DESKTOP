@@ -93,7 +93,7 @@ export default {
   methods: {
     efetuarLogin() {
       this.$store.dispatch("auth/efetuarLogin", this.user).then(() => {
-        this.$router.push({name: 'main'})
+        this.$router.push('/main/main')
       }).catch((err) => {
         if (err.request.status === 401) {
             this.mensagemErro = "Login ou senha inválido(s)!!!";
