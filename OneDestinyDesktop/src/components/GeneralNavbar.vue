@@ -6,9 +6,9 @@
       <q-btn flat label="Biblioteca" @click="$router.push('/Library/library')"/>
       <q-space />
       <q-tabs shrink stretch>
-        <q-tab name="friends" label="Amigos" />
-        <q-tab name="user" label="User" @click="userCard = true"/>
-        <q-tab name="notifications" icon="notifications">
+        <q-tab name="Grupos" label="Grupos" @click="friends = true" />
+        <q-tab name="User" label="User" @click="userCard = true"/>
+        <q-tab name="Notifications" icon="notifications">
           <q-menu>
             <q-list style="min-width: 100px">
               <q-item>
@@ -67,6 +67,33 @@
         </q-card-actions>
       </q-card>
     </q-dialog>
+
+    <!-- LISTA DE AMIGS -->
+    <q-dialog v-model="friends">
+      <q-card style="width: 650px">   
+        <q-card-section class="items-center no-wrap">
+          Amigos Onlines
+            <div 
+            v-for="userFriendsName in allUserFriendsName"
+            :key="userFriendsName.id"
+            >
+              <div class="row">
+                <q-avatar>
+                  <img v-bind:src="userFriendsName.userdatum.avatar" alt="">
+                </q-avatar>
+                <p>{{ userFriendsName.username }}</p>
+              </div>
+            </div>
+            <hr>
+            <div>
+              Grupos de Conversa
+              <div>
+                <q-btn label="Ir aos Grupos de Amigos" @click="$router.push('/groups/groups')" />
+              </div>
+            </div>
+        </q-card-section>
+      </q-card>
+    </q-dialog>
   </div>
 </div>
 </template>
@@ -74,13 +101,26 @@
 // import axios from 'axios'
 // const dataauth = localStorage.getItem('nJKgfIOlWjeIKwR50FIBvb9-J547BANhdQPDeKumDUM')
 // const id = localStorage.getItem('hDzseX436jkUeD99D7q3st3ZXwpAo5WIXBsspqm1nng')
+
+import { mapGetters, mapActions } from "vuex";
+
 export default {
   data () {
     return {
       users: { },
       tags: {},
-      userCard: false
+      userCard: false,
+      friends: false
     }
+  },
+
+   methods: {
+      ...mapActions(["seeFriendData"]),
+  },
+
+  computed: mapGetters(["allUserFriendsName", ]),
+  created() {
+      this.seeFriendData()
   }
 
 }

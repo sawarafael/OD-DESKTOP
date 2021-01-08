@@ -39,6 +39,14 @@ const routes = [
       { path: 'market', component: () => import('pages/Market') }
     ]
   },
+
+  {
+    path: '/groups',
+    component: () => import('layouts/GroupsLayout'),
+    children: [
+      { path: 'groups', component: () => import('pages/Groups')}
+    ]
+  },
   // Always leave this as last one,
   // but you can also remove it
   {

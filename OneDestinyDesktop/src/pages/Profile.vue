@@ -43,16 +43,21 @@
                         <q-chip>Data do Post</q-chip>
                     </div>
                 </div>
-            </div>
-            <div class="col">
+            </div>            
+                Amigos:
+            <div class="col"
+            v-for="userFriendsName in allUserFriendsName"            
+            :key="userFriendsName.id"
+            >
                 <div>
-                    Amigos:
                     <div>
                         <q-avatar size="120px">
-                            <img src="https://s4.anilist.co/file/anilistcdn/character/large/b76026-AfknPHzLCvG9.png" alt="">
+                            <img v-bind:src="userFriendsName.userdatum.avatar" alt="">
                         </q-avatar>
-                        <p>ID do Amigo</p>
-                        <p>Nome do Amigo</p>
+                        <br>
+                        <q-chip>{{ userFriendsName.id }}</q-chip>
+                        <q-chip>Level {{ userFriendsName.userdatum.level }}</q-chip>
+                        <p>{{ userFriendsName.username }} - ( {{ userFriendsName.userdatum.nickname }} )</p>
                     </div>
                 </div>
             </div>
@@ -62,7 +67,19 @@
 </template>
 
 <script>
+import { mapGetters, mapActions } from "vuex";
 export default {
-  name: 'Profile'
+  name: 'Profile',
+
+  methods: {
+      ...mapActions(["seeFriendData"]),
+  },
+
+  computed: mapGetters(["allUserFriendsName"]),
+  created() {
+      this.seeFriendData()
+  }
+  
+      
 }
 </script>
