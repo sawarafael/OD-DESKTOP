@@ -11,7 +11,11 @@
         <q-space />
         <q-tabs shrink stretch>
           <q-tab name="Grupos" label="Grupos" @click="friends = true" />
-          <q-tab name="User" label="User" @click="userCard = true" />
+          <q-tab
+            :name="userData.nickname"
+            label="User"
+            @click="userCard = true"
+          />
           <q-tab name="Notifications" icon="notifications">
             <q-menu>
               <q-list style="min-width: 100px">
@@ -135,12 +139,13 @@ export default {
   },
 
   methods: {
-    ...mapActions(["seeFriendData"])
+    ...mapActions(["seeFriendData", "fetchUser"])
   },
 
-  computed: mapGetters(["allUserFriendsName"]),
+  computed: mapGetters(["allUserFriendsName", "userData"]),
   created() {
     this.seeFriendData();
+    this.fetchUser();
   }
 };
 </script>
