@@ -29,6 +29,7 @@
                         class="full-width text-weight-light"
                         size="lg"
                         color="indigo-10"
+                        type="submit"
                         label="Enviar Pedido de Amizade"
                         />
                     </q-form>
@@ -41,6 +42,7 @@
 
 <script>
 import { mapActions } from "vuex";
+
 export default {
     name: 'Groups',
 
@@ -53,9 +55,13 @@ export default {
 
     methods: {
         ...mapActions(["requestFriend"]),
-        sendReqFriend(evt) {
-            evt.preventDefault();
-            this.requestFriend(this.id2);
+        sendReqFriend() {
+            const reqFriends = {
+                id1 : localStorage.getItem("id"),
+                id2 : this.id2
+            }
+            console.log(reqFriends)
+            this.requestFriend(reqFriends);
         } 
     }
 }

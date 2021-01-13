@@ -39,23 +39,30 @@ const actions = {
             http({
                 url: `users/normal/friend/request`,
                 method: "POST",
-                data: `"id1":${id}, "id2":${num}`,
+                data: num,
                 headers: {
                     'Authorization': `${token}`
                 }
             })
               .then(resp => {
-                  console.log(resp)
+                  console.log("Deu certo!")
+                  resolve(resp);
               })
               .catch(err => {
-                  console.log(err)
+                  console.log(err + " Deu erro")
+                  reject(err)
               })
 
         })
     },
 
-    addFriend({ commit }, user) {
-
+    addFriend({ commit }, add) {
+        return new Promise((resolve, reject) => {
+            commit("friendData_status_request");
+            http({
+                url: `users/normal/friend/update/${add}`
+            })
+        })
     },
 
     refuseFriend({ commit }, user ) {

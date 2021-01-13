@@ -51,7 +51,7 @@
             >
                 <div>
                     <div>
-                        <q-avatar size="120px">
+                        <q-avatar size="50px">
                             <img v-bind:src="userFriendsName.userdatum.avatar" alt="">
                         </q-avatar>
                         <br>
