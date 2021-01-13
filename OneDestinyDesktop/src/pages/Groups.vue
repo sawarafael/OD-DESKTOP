@@ -1,19 +1,104 @@
 <template>
     <div>       
 
-        <q-btn label="Adicionar um Usuário" @click="addFriend = true"/>
-        <q-btn label="Remover uma Amizade" />
+        <div class="q-pl-xl on-top col">            
+            <q-btn label="Adicionar um Usuário" @click="findAndAddFriend = true"/>
+            <q-btn label="Remover uma Amizade" />
+        </div>
 
-        <h2>Amigos do Usuário</h2>
+        <div>
+            <q-card>
+                <!-- Pedidos de Amizade -->
+                <q-card-section>
+                    <div class="text-center text-h6">Pedidos de Amizade</div>
+                    <div
+                    class="row"
+                    v-for="userRequest in allUserRequests"
+                    :key="userRequest.id"
+                    >
+                        <div>
+                            <div>
+                                <q-avatar size="50px">
+                                    <img v-bind:src="userRequest.userdatum.avatar" alt="">
+                                </q-avatar>
+                                <br />
+                                <q-chip>{{ userRequest.id }}</q-chip>
+                                <q-chip> Level {{ userRequest.userdatum.level }}</q-chip>
+                                <p>
+                                    {{ userRequest.username }} - (
+                                    {{ userRequest.userdatum.nickname }} )
+                                </p>
+                                <q-btn label="Aceitar Usuário" @click="addThatFriend(userRequest.id)" />
+                                <q-btn label="Recusar Usuário" @click="refThatFriend(userRequest.id)" />
+                            </div>
+                        </div>
+                    </div>
+                </q-card-section>
+                <hr>  
+                <!-- AMIGOS -->
+                <q-card-section>                    
+                    <div class="text-center text-h6">Seus Amigos</div>
+                    <div
+                    class="row"
+                    v-for="userFriend in allUserFriends"
+                    :key="userFriend.id"
+                    >
+                        <div>
+                            <div>
+                                <q-avatar size="50px">
+                                    <img v-bind:src="userFriend.userdatum.avatar" alt="">
+                                </q-avatar>
+                                <br />
+                                <q-chip>{{ userFriend.id }}</q-chip>
+                                <q-chip> Level {{ userFriend.userdatum.level }}</q-chip>
+                                <p>
+                                    {{ userFriend.username }} - (
+                                    {{ userFriend.userdatum.nickname }} )
+                                </p>
+                                <q-btn label="Melhorar Amizade" @click="upThatFriend(userFriend.id)" />
+                                <q-btn label="Remover Usuário" @click="refThatFriend(userFriend.id)" />
+                                <q-btn label="Bloquear Usuário" @click="refThatFriend(userFriend.id)" />
+                            </div>
+                        </div>
+                    </div>
+                </q-card-section>
+                <hr>                
+                <!-- MELHORES AMIGOS -->
+                <q-card-section>                    
+                    <div class="text-center text-h6">Seus Melhores Amigos</div>
+                    <div
+                    class="row"
+                    v-for="userBest in allUserBestFriends"
+                    :key="userBest.id"
+                    >
+                        <div>
+                            <div>
+                                <q-avatar size="50px">
+                                    <img v-bind:src="userBest.userdatum.avatar" alt="">
+                                </q-avatar>
+                                <br />
+                                <q-chip>{{ userBest.id }}</q-chip>
+                                <q-chip> Level {{ userBest.userdatum.level }}</q-chip>
+                                <p>
+                                    {{ userBest.username }} - (
+                                    {{ userBest.userdatum.nickname }} )
+                                </p>
+                                <q-btn label="Rebaixar Amizade" @click="downThatFriend(userBest.id)" />
+                                <q-btn label="Bloquear Usuário" @click="refThatFriend(userBest.id)" />
+                            </div>
+                        </div>
+                    </div>
+                </q-card-section>
+                <hr>
+            </q-card>
+        </div>
 
-
-        <h2> Grupos de Amigos de Usuário </h2>
-        <h4>Ainda não disponível...</h4>
-
+        
+            
 
 
         <!-- FRIENDS -->
-        <q-dialog v-model="addFriend">
+        <q-dialog v-model="findAndAddFriend">
                 <q-card>
                     <div>
                     <q-form @submit="sendReqFriend">
@@ -41,28 +126,68 @@
 </template>
 
 <script>
-import { mapActions } from "vuex";
+import { mapActions, mapGetters } from "vuex";
+
+const idUser = localStorage.getItem("id");
 
 export default {
     name: 'Groups',
 
     data() {
         return {
-            addFriend: false,
+            findAndAddFriend: false,
             id2: ""
         }
     },
 
     methods: {
-        ...mapActions(["requestFriend"]),
+        ...mapActions(["requestFriend", 
+                       "addFriend", 
+                       "refuseFriend",
+                       "upgradeFriend",
+                       "downgradeFriend"]),
         sendReqFriend() {
             const reqFriends = {
-                id1 : localStorage.getItem("id"),
+                id1 : idUser,
                 id2 : this.id2
             }
-            console.log(reqFriends)
             this.requestFriend(reqFriends);
-        } 
-    }
+        },        
+        addThatFriend(idr) {
+            const addFriend = {
+                id1: idUser,
+                idr: idr
+            }; 
+            this.addFriend(addFriend);
+        },
+        refThatFriend(idr) {
+            const refFriend = {
+                id1: idUser,
+                idr: idr
+            };
+            this.refuseFriend(refFriend);
+        },
+        upThatFriend(idr) {
+            const upFriend = {
+                id1: idUser,
+                idr: idr
+            };
+            this.upgradeFriend(upFriend);
+        },
+        downThatFriend(idr) {
+            const downFriend = {
+                id1: idUser,
+                idr: idr
+            };
+            this.downgradeFriend(downFriend);
+        }
+    },
+
+    computed: {
+        ...mapGetters(["allUserRequests", 
+                       "allUserFriends",
+                       "allUserBestFriends"]),
+    },
+
 }
 </script>
