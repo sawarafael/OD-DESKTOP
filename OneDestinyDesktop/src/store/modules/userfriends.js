@@ -18,6 +18,11 @@ const getters = {
 
 const actions = {
     
+    //Estranhamente esta função de visualização de dados(seeFriendData) dos amigos parou de funcionar
+    //Eu ainda não sei porque ela parou de funcionar...
+    //API está okay, tanto ela quanto Servidor
+    //O problema está aqui ↓
+
    seeFriendData({ commit }) {
        return new Promise((resolve, reject) => {
            commit("friendData_status_request");
@@ -49,7 +54,7 @@ const actions = {
             
            })
            .catch(err => {
-               console.log(err)
+               reject(err)
            })
        })
    },
