@@ -26,6 +26,7 @@ const actions = {
           const role = resp.data.role;
           localStorage.setItem("token", token);
           localStorage.setItem("id", id);
+          localStorage.setItem("role", role)
           http.defaults.headers.common.Authorization = token;
           commit("auth_sucess", token, id, role);
           resolve(resp);

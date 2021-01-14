@@ -16,12 +16,11 @@ const actions = {
   fetchUser({ commit }) {
     commit("userDataRequest");
     return new Promise(() => {
-      http
-        .get({
+      http({
           url: `users/normal/dataview/id?id=${id}`,
           method: "GET",
           headers: {
-            Authorization: `${token}`
+            'Authorization': `${token}`
           }
         })
         .then(resp => {

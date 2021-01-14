@@ -105,11 +105,12 @@ export default {
   name: "Profile",
 
   methods: {
-    ...mapActions(["fetchUser"])
+    ...mapActions(["fetchUser", "seeFriendData"])
   },
 
   computed: mapGetters(["userData", "allUserFriends", "allUserBestFriends"]),
   created() {
+    this.seeFriendData();
     this.fetchUser();
   }
 };

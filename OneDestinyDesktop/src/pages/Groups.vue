@@ -3,7 +3,6 @@
 
         <div class="q-pl-xl on-top col">            
             <q-btn label="Adicionar um Usuário" @click="findAndAddFriend = true"/>
-            <q-btn label="Remover uma Amizade" />
         </div>
 
         <div>
@@ -109,6 +108,12 @@
                         v-model="id2"
                         label="Id do Usuário"
                         />
+                        <q-input
+                        filled
+                        cleareble
+                        v-model="username"
+                        label="Username do Usuário"
+                        />
                         <q-btn
                         unelevated
                         class="full-width text-weight-light"
@@ -129,6 +134,7 @@
 import { mapActions, mapGetters } from "vuex";
 
 const idUser = localStorage.getItem("id");
+const role = localStorage.getItem("role");
 
 export default {
     name: 'Groups',
@@ -136,12 +142,14 @@ export default {
     data() {
         return {
             findAndAddFriend: false,
-            id2: ""
+            id2: "",
+            username: ""
         }
     },
 
     methods: {
-        ...mapActions(["requestFriend", 
+        ...mapActions(["seeFriendData",
+                       "requestFriend", 
                        "addFriend", 
                        "refuseFriend",
                        "upgradeFriend",
@@ -149,7 +157,8 @@ export default {
         sendReqFriend() {
             const reqFriends = {
                 id1 : idUser,
-                id2 : this.id2
+                id2 : this.id2,
+                username: this.username
             }
             this.requestFriend(reqFriends);
         },        
@@ -159,6 +168,7 @@ export default {
                 idr: idr
             }; 
             this.addFriend(addFriend);
+            location.reload();
         },
         refThatFriend(idr) {
             const refFriend = {
@@ -166,13 +176,25 @@ export default {
                 idr: idr
             };
             this.refuseFriend(refFriend);
+            location.reload();
         },
         upThatFriend(idr) {
-            const upFriend = {
+             const upFriend = {
                 id1: idUser,
                 idr: idr
             };
-            this.upgradeFriend(upFriend);
+            if(role === '0') {
+                if(this.countUserBestFriends < 2 ) {
+                    this.upgradeFriend(upFriend)
+                    location.reload();
+                } else if (this.countUserBestFriends >= 2 ) {
+                    alert("Não é premium! Assine o premium!")
+                    location.reload();
+                }
+            } else if (role === '1' || role === '2') {
+                this.upgradeFriend(upFriend)
+                location.reload();
+            }            
         },
         downThatFriend(idr) {
             const downFriend = {
@@ -180,14 +202,18 @@ export default {
                 idr: idr
             };
             this.downgradeFriend(downFriend);
+            location.reload();
         }
     },
 
-    computed: {
-        ...mapGetters(["allUserRequests", 
+    computed: mapGetters(["allUserRequests", 
                        "allUserFriends",
-                       "allUserBestFriends"]),
-    },
+                       "allUserBestFriends",
+                       "countUserBestFriends"]),
+    created() {
+        this.seeFriendData();
+    }
+    
 
 }
 </script>

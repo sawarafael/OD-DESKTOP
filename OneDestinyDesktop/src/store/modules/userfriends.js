@@ -13,15 +13,13 @@ const state = {
 const getters = {
     allUserFriends: state => state.userFriends,
     allUserRequests: state => state.userRequests,
-    allUserBestFriends: state => state.userBestFriends
+    allUserBestFriends: state => state.userBestFriends,
+    countUserBestFriends: state => {
+        return state.userBestFriends.length
+    }
 }
 
 const actions = {
-    
-    //Estranhamente esta função de visualização de dados(seeFriendData) dos amigos parou de funcionar
-    //Eu ainda não sei porque ela parou de funcionar...
-    //API está okay, tanto ela quanto Servidor
-    //O problema está aqui ↓
 
    seeFriendData({ commit }) {
        return new Promise((resolve, reject) => {
@@ -45,13 +43,27 @@ const actions = {
             
             const onlyBestFriends = resp.data.resp.filter((best) => {
                 return best.statusCode === 3
-            }) 
+            })
 
-            commit("friendData_view", onlyFriends.map((see) => see.user), 
-                                      onlyRequests.map((see) => see.user),
-                                      onlyBestFriends.map((see) => see.user)
-                  )
+            const userfdatum = {
+                requests : onlyRequests.map((see) => see.user),
+                userFriends : onlyFriends.map((see) => see.user),
+                userBestFriends : onlyBestFriends.map((see) => see.user)
+            }
+
             
+            
+            if (onlyRequests.map((seen) => seen.idUserTwo) === onlyRequests.map((seem) => seem.idUserOne)) {
+                console.log("é o usuario")
+            } else {
+                commit("requestFriend_view", userfdatum.requests)
+            }
+           
+            // commit("requestFriend_view", userfdatum.requests)
+            commit("friendData_view", userfdatum.userFriends)
+            commit("friendData_best_view", userfdatum.userBestFriends)
+
+            console.log(onlyRequests.map((seen) => seen.idUserTwo), onlyRequests.map((seem) => seem.idUserOne))
            })
            .catch(err => {
                reject(err)
@@ -62,6 +74,8 @@ const actions = {
     requestFriend({ commit }, num) {
         return new Promise((resolve, reject) => {
             commit("friendData_status_request");
+            
+            /*
             http({
                 url: `users/normal/friend/request`,
                 method: "POST",
@@ -76,7 +90,7 @@ const actions = {
               .catch(err => {
                   reject(err)
               })
-
+              */
         })
     },
 
@@ -124,29 +138,28 @@ const actions = {
     upgradeFriend({ commit }, upg ) {        
         return new Promise((resolve, reject) => {
             commit("friendData_status_request");
-            http({
-                url: `users/normal/friend/update/3`,
-                method: "PATCH",
-                data: upg,
-                headers: {
-                    'Authorization': `${token}`
-                }
+                http({
+                    url: `users/normal/friend/update/3`,
+                    method: "PATCH",
+                    data: upg,
+                    headers: {
+                        'Authorization': `${token}`
+                    }
+                })
+                .then(resp => {
+                      resolve(resp)
+                })
+                .catch(err => {
+                      reject(err)
+                })    
             })
-              .then(resp => {
-                  resolve(resp)
-              })
-              .catch(err => {
-                  reject(err)
-              })
-        })
-
     },
 
     downgradeFriend({ commit }, upg ) {        
         return new Promise((resolve, reject) => {
             commit("friendData_status_request");
             http({
-                url: `users/normal/friend/update/3`,
+                url: `users/normal/friend/update/2`,
                 method: "PATCH",
                 data: upg,
                 headers: {
@@ -160,7 +173,6 @@ const actions = {
                   reject(err)
               })
         })
-
     },
     
     blockFriend({ commit }, blo ) {        
@@ -191,11 +203,19 @@ const mutations = {
         state.status = "loading";
     },
 
-    friendData_view(state, userFriends, userRequests, userBestFriends) {
+    requestFriend_view(state, userRequests) {
+        state.status = "sucess"
+        state.userRequests = userRequests
+    },
+
+    friendData_view(state, userFriends) {
         state.status = "sucess";
         state.userFriends = userFriends;
-        state.userRequests = userRequests;
-        state.userBestFriends = userBestFriends;
+    },
+
+    friendData_best_view(state, userBestFriends) {
+        state.staus = "sucess";
+        state.userBestFriends = userBestFriends
     },
 
     friendData_error(state) {

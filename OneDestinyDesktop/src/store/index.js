@@ -3,6 +3,7 @@ import Vuex from "vuex";
 import auth from "./modules/auth";
 import userf from "./modules/userfriends";
 import userdata from "./modules/userdata";
+import room from "./modules/room";
 
 Vue.use(Vuex);
 
@@ -20,7 +21,8 @@ export default function(/* { ssrContext } */) {
     modules: {
       auth,
       userf,
-      userdata
+      userdata,
+      room
     },
 
     // enable strict mode (adds overhead!)
