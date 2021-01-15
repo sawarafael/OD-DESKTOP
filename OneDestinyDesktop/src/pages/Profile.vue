@@ -65,7 +65,7 @@
               </div>
             </div>
           </div>
-          
+
           <div class="text-center">
             <div class="text-h6">Melhores Amigos</div>
           </div>
@@ -92,7 +92,10 @@
         </q-card-section>
         <q-separator />
         <q-card-actions align="right">
-          <q-btn flat label="Editar perfil" />
+          <q-btn flat @click="fixed = true" label="Editar perfil" />
+          <q-dialog v-model="fixed">
+            <user-form />
+          </q-dialog>
         </q-card-actions>
       </q-card>
     </div>
@@ -101,7 +104,9 @@
 
 <script>
 import { mapGetters, mapActions } from "vuex";
+import UserForm from "../components/UserForm.vue";
 export default {
+  components: { UserForm },
   name: "Profile",
 
   methods: {
@@ -112,6 +117,11 @@ export default {
   created() {
     this.seeFriendData();
     this.fetchUser();
+  },
+  data() {
+    return {
+      fixed: false
+    };
   }
 };
 </script>

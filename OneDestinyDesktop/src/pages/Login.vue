@@ -45,18 +45,24 @@
             <q-form @submit.prevent="login" class="q-gutter-md">
               <q-input
                 filled
-                clearable
                 v-model="username"
                 type="username"
                 label="Usuário"
               />
               <q-input
-                filled
-                clearable
                 v-model="password"
-                type="password"
+                filled
+                :type="isPwd ? 'password' : 'text'"
                 label="Senha"
-              />
+              >
+                <template v-slot:append>
+                  <q-icon
+                    :name="isPwd ? 'visibility_off' : 'visibility'"
+                    class="cursor-pointer"
+                    @click="isPwd = !isPwd"
+                  />
+                </template>
+              </q-input>
               <q-btn
                 unelevated
                 class="full-width text-weight-light"
@@ -86,7 +92,8 @@ export default {
     return {
       slide: 1,
       username: "",
-      password: ""
+      password: "",
+      isPwd: true
     };
   },
   methods: {

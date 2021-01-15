@@ -34,7 +34,12 @@
             <q-menu>
               <q-item>
                 <q-item-section>
-                  Configurações do Sistema
+                  <q-btn
+                    color="white"
+                    text-color="black"
+                    label="Logout"
+                    @click.prevent="logout()"
+                  />
                 </q-item-section>
               </q-item>
             </q-menu>
@@ -45,46 +50,6 @@
       <!-- CARD DE USER -->
       <q-dialog v-model="userCard">
         <user-card />
-        <!-- <q-card>
-    <img src="https://giffiles.alphacoders.com/121/121556.gif" alt="" />
-    <div class="absolute-center">
-      <div class="row">
-        <div class="col-12.col-md text-h6">
-          Username
-        </div>
-        <div class="col-12.col-md">
-          <q-item-section>
-            <q-avatar size="110px">
-              <img src="https://i.imgur.com/MryWPyT.gif" alt="" />
-              <q-badge floating color="primary">Adm</q-badge>
-            </q-avatar>
-          </q-item-section>
-        </div>
-        <div class="col-12.col-md text-right">
-          Level 1
-        </div>
-      </div>
-    </div>
-    <q-card-section>
-      <div class="text-h5">
-        Biografia do Usuário
-      </div>
-      <div class="text-caption text-h6 text-grey">
-        Tags do Usuário
-      </div>
-    </q-card-section>
-    <q-separator />
-    <q-card-actions align="right">
-      <q-btn v-close-popup flat color="primary" label="Fechar" />
-      <q-btn
-        v-close-popup
-        flat
-        color="primary"
-        @click="$router.push('/profile/profile')"
-        label="Abrir Perfil Completo"
-      />
-    </q-card-actions> </q-card
-> -->
       </q-dialog>
 
       <!-- LISTA DE AMIGS -->
@@ -92,10 +57,7 @@
         <q-card style="width: 650px">
           <q-card-section class="items-center no-wrap">
             Amigos Onlines
-            <div
-              v-for="userFriend in allUserFriends"
-              :key="userFriend.id"
-            >
+            <div v-for="userFriend in allUserFriends" :key="userFriend.id">
               <div class="row">
                 <q-avatar>
                   <img v-bind:src="userFriend.userdatum.avatar" alt="" />
@@ -139,7 +101,10 @@ export default {
   },
 
   methods: {
-    ...mapActions(["fetchUser"])
+    ...mapActions(["fetchUser"]),
+    logout: function() {
+      this.$store.dispatch("logout").then(this.$router.push("/"));
+    }
   },
 
   computed: mapGetters(["allUserFriends", "userData"]),
