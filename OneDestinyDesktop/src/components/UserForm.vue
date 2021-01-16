@@ -1,7 +1,9 @@
 <template>
   <q-card>
     <q-card-section>
-      <div class="text-h6 text-center">Edite seu perfil</div>
+      <div class="text-h6 text-center text-primary text-weight-bold">
+        Edite seu perfil
+      </div>
     </q-card-section>
 
     <q-separator />
@@ -11,28 +13,28 @@
       class="scroll"
     >
       <q-form @submit="onSubmit" @reset="onReset" class="q-gutter-md">
-        <q-input rounded outlined v-model="nickname" label="Nome de usuário" />
+        <div class="text-subtitle2 q-px-sm text-primary">Nome de usuário</div>
+        <q-input outlined v-model="nickname" filled />
+        <div class="text-subtitle2 q-px-sm text-primary">Biografia</div>
         <q-input
-          rounded
           outlined
-          autogrow
           v-model="bio"
           type="textarea"
-          label="Bio"
+          filled
           :rules="[val => val.length <= 140 || 'No maximo 140 caracteres']"
         />
+        <div class="text-subtitle2 q-px-sm text-primary">Avatar do perfil</div>
         <q-file
-          rounded
           v-model="avatar"
-          label="Avatar"
+          filled
           outlined
           use-chips
           style="max-width: 300px"
         />
+        <div class="text-subtitle2 q-px-sm text-primary">Capa de perfil</div>
         <q-file
-          rounded
           v-model="coverPage"
-          label="Cover"
+          filled
           outlined
           use-chips
           style="max-width: 300px"

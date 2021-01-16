@@ -4,6 +4,7 @@ import auth from "./modules/auth";
 import userf from "./modules/userfriends";
 import userdata from "./modules/userdata";
 import room from "./modules/room";
+import progressbar from "./modules/progress-bar";
 
 Vue.use(Vuex);
 
@@ -22,7 +23,8 @@ export default function(/* { ssrContext } */) {
       auth,
       userf,
       userdata,
-      room
+      room,
+      progressbar
     },
 
     // enable strict mode (adds overhead!)
