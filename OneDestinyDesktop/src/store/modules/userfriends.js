@@ -32,38 +32,72 @@ const actions = {
                }
            })
            .then(resp => {
-                  
-            const onlyRequests = resp.data.resp.filter((reqs) => {
+
+            const onlyRequests = resp.data.friendList.filter((reqs) => {
                 return reqs.statusCode === 1
             });
 
-            const onlyFriends = resp.data.resp.filter((fres) => {
+            const onlyFriends = resp.data.friendList.filter((fres) => {
                 return fres.statusCode === 2
             });
             
-            const onlyBestFriends = resp.data.resp.filter((best) => {
+            const onlyBestFriends = resp.data.friendList.filter((best) => {
                 return best.statusCode === 3
             })
-
-            const userfdatum = {
-                requests : onlyRequests.map((see) => see.user),
-                userFriends : onlyFriends.map((see) => see.user),
-                userBestFriends : onlyBestFriends.map((see) => see.user)
-            }
-
             
-            
-            if (onlyRequests.map((seen) => seen.idUserTwo) === onlyRequests.map((seem) => seem.idUserOne)) {
-                console.log("é o usuario")
-            } else {
-                commit("requestFriend_view", userfdatum.requests)
-            }
-           
-            // commit("requestFriend_view", userfdatum.requests)
-            commit("friendData_view", userfdatum.userFriends)
-            commit("friendData_best_view", userfdatum.userBestFriends)
+            if(resp.data.friendsOne) {
 
-            console.log(onlyRequests.map((seen) => seen.idUserTwo), onlyRequests.map((seem) => seem.idUserOne))
+                const filtf = onlyFriends.map((x) => x.idUserTwo)
+                const filtbf = onlyBestFriends.map((y) => y.idUserTwo)
+                const filtr = onlyRequests.map((z) => z.idUserTwo)
+                
+                const filtFriend = resp.data.friendsOne.filter(el => {
+                    return filtf.includes(el.id)
+                }) 
+
+                const filtbFriends = resp.data.friendsOne.filter(el => {
+                    return filtbf.includes(el.id)
+                }) 
+
+                const filtRequests = resp.data.friendsOne.filter(el => {
+                    return filtr.includes(el.id)
+                })
+
+                commit("friendData_view", filtFriend)
+                commit("friendData_best_view", filtbFriends)
+                commit("requestFriend_view", filtRequests)
+                
+
+            } else if (resp.data.friendsTwo) {
+                
+                const filf = onlyFriends.map((x) => x.idUserOne)
+                const filbf = onlyBestFriends.map((x) => x.idUserOne)
+                const filr = onlyRequests.map((x) => x.idUserOne)
+
+                const filFriend = resp.data.friendsTwo.filter(el => {
+                    return filf.includes(el.id)
+                })
+
+                const filbFriend = resp.data.friendsTwo.filter(el => {
+                    return filbf.includes(el.id)
+                })
+
+                const filRequest = resp.data.friendsTwo.filter(el => {
+                    return filr.includes(el.id)
+                })
+
+                commit("friendData_view", filFriend)
+                commit("friendData_best_view", filbFriend)
+                commit("requestFriend_view", filRequest)                
+
+                 console.log(filf)
+            }
+            
+           console.log(resp.data)
+            console.log("\n Requests:  \n ", onlyRequests , 
+            "\n Friends:   \n" , onlyFriends , 
+            "\n BFriends:  \n" , onlyBestFriends)
+            // console.log( "id usuario atual: " + id , "\n" ,  onlyRequests)
            })
            .catch(err => {
                reject(err)
