@@ -4,40 +4,54 @@ const id = localStorage.getItem("id");
 const token = localStorage.getItem("token");
 
 const state = {
-  userData: {},
+  userID: {},
+  userName: {},
+  userDatum: {},
   status: ""
 };
 
 const getters = {
-  userData: state => state.userData
+  userID: state => state.userID,
+  userName: state => state.userName,
+  userDatum: state => state.userDatum
 };
 
 const actions = {
   fetchUser({ commit }) {
-    commit("userDataRequest");
     return new Promise(() => {
       http({
-          url: `users/normal/dataview/id?id=${id}`,
-          method: "GET",
-          headers: {
-            'Authorization': `${token}`
-          }
-        })
-        .then(resp => {
-          const userData = resp.data;
-          commit("userDataView", userData);
-        });
+        url: `users/normal/dataview/id?id=${id}`,
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      }).then(resp => {
+        const userData = {
+          userID: resp.data.userd.map(user => user.id),
+          userName: resp.data.userd.map(user => user.username),
+          userDatum: resp.data.userd.map(user => user.userdatum)
+        };
+        console.log(userData);
+        commit("userIDData", userData.userID);
+        commit("userNameData", userData.userName);
+        commit("userDatumData", userData.userDatum);
+      });
     });
   }
 };
 
 const mutations = {
-  userDataView(state, userData) {
-    state.status = "sucess";
-    state.userData = userData;
+  userIDData(state, userID) {
+    state.status = "IDsucess";
+    state.userID = userID;
   },
-  userDataRequest(state) {
-    state.status = "loading";
+  userNameData(state, userName) {
+    state.status = "usernameSucess";
+    state.userName = userName;
+  },
+  userDatumData(state, userDatum) {
+    state.status = "userDatumSucess";
+    state.userDatum = userDatum;
   }
 };
 
@@ -47,3 +61,5 @@ export default {
   actions,
   mutations
 };
+
+/// Criar mutations individuais para pegar os dados!!
