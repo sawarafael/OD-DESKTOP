@@ -5,6 +5,11 @@ import userf from "./modules/userfriends";
 import userdata from "./modules/userdata";
 import room from "./modules/room";
 import progressbar from "./modules/progress-bar";
+// import VuexPersistence from "vuex-persist";
+
+// const vuexLocal = new VuexPersistence({
+//   storage: window.localStorage
+// });
 
 Vue.use(Vuex);
 
@@ -26,7 +31,6 @@ export default function(/* { ssrContext } */) {
       room,
       progressbar
     },
-
     // enable strict mode (adds overhead!)
     // for dev mode only
     strict: process.env.DEBUGGING

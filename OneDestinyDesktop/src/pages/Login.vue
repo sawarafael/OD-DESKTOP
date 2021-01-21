@@ -86,6 +86,7 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
 export default {
   name: "Login",
   data() {
@@ -105,6 +106,7 @@ export default {
         .then(() => this.$router.push("/main/main"))
         .catch(err => console.log(err));
     }
-  }
+  },
+  computed: mapGetters(["authStatus"])
 };
 </script>

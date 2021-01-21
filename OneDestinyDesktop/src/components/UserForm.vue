@@ -14,18 +14,20 @@
     >
       <q-form @submit="onSubmit" @reset="onReset" class="q-gutter-md">
         <div class="text-subtitle2 q-px-sm text-primary">Nome de usuário</div>
-        <q-input outlined v-model="nickname" filled />
-        <div class="text-subtitle2 q-px-sm text-primary">Biografia</div>
+        <q-input outlined v-model="userDatum.nickname" filled />
+        <div class="text-subtitle2 q-px-sm text-primary">
+          Biografia
+        </div>
         <q-input
           outlined
-          v-model="bio"
+          v-model="userDatum.bio"
           type="textarea"
           filled
           :rules="[val => val.length <= 140 || 'No maximo 140 caracteres']"
         />
         <div class="text-subtitle2 q-px-sm text-primary">Avatar do perfil</div>
         <q-file
-          v-model="avatar"
+          v-model="userDatum.avatar"
           filled
           outlined
           use-chips
@@ -33,7 +35,7 @@
         />
         <div class="text-subtitle2 q-px-sm text-primary">Capa de perfil</div>
         <q-file
-          v-model="coverPage"
+          v-model="userDatum.coverPage"
           filled
           outlined
           use-chips
@@ -62,10 +64,19 @@ export default {
   name: "UserForm",
   data() {
     return {
-      nickname: "",
-      bio: "",
-      avatar: null
+      userDatum: {}
     };
+  },
+  methods: {
+    onSubmit: async function() {
+      const userDatum = this.userDatum;
+      this.$store
+        .dispatch("sendUserData", userDatum)
+        .catch(error => console.log(error));
+    },
+    onReset: function() {
+      alert("A form foi resetada");
+    }
   }
 };
 </script>

@@ -11,11 +11,7 @@
         <q-space />
         <q-tabs shrink stretch>
           <q-tab name="Grupos" label="Grupos" @click="friends = true" />
-          <q-tab
-            :name="userData.nickname"
-            label="User"
-            @click="userCard = true"
-          />
+          <q-tab name="Perfil" label="Perfil" @click="userCard = true" />
           <q-tab name="Notifications" icon="notifications">
             <q-menu>
               <q-list style="min-width: 100px">
@@ -31,17 +27,19 @@
             icon="payments"
           />
           <q-tab name="config" icon="settings">
-            <q-menu>
-              <q-item>
+            <q-menu transition-show="scale" transition-hide="scale">
+              <q-list style="min-width: 150px">
                 <q-item-section>
                   <q-btn
-                    color="white"
-                    text-color="black"
-                    label="Logout"
-                    @click.prevent="logout()"
-                  />
+                    unelevated
+                    icon="fas fa-adjust"
+                    label="Dark Mode"
+                    @click="turnOnDarkMode()"
+                  ></q-btn>
+
+                  <q-btn unelevated label="Logout" @click.prevent="logout()" />
                 </q-item-section>
-              </q-item>
+              </q-list>
             </q-menu>
           </q-tab>
         </q-tabs>
@@ -93,7 +91,7 @@ export default {
   components: { UserCard },
   data() {
     return {
-      users: {},
+      userdatum: {},
       tags: {},
       userCard: false,
       friends: false
@@ -104,10 +102,13 @@ export default {
     ...mapActions(["fetchUser"]),
     logout: function() {
       this.$store.dispatch("logout").then(this.$router.push("/"));
+    },
+    turnOnDarkMode: function() {
+      this.$q.dark.toggle();
     }
   },
 
-  computed: mapGetters(["allUserFriends", "userData"]),
+  computed: mapGetters(["allUserFriends", "userDatum", "userName"]),
   created() {
     this.fetchUser();
   }

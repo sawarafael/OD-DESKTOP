@@ -5,7 +5,7 @@
         <q-card-section>
           <div>
             <q-img
-              src="https://i.pinimg.com/originals/68/67/69/68676920da6c70fb15577cfce6ed99ea.jpg"
+              v-bind:src="userDatum[0].coverPage"
               class="cover-image"
               native-context-menu
             >
@@ -13,7 +13,7 @@
                 <q-btn round class="q-pa-lg q-mt-lg">
                   <q-avatar size="8em">
                     <img
-                      src="https://i.pinimg.com/564x/84/e2/49/84e2493bf512671ce27e6f86abc03e7d.jpg"
+                      v-bind:src="userDatum[0].avatar"
                       alt="Seu avatar"
                       class="user-avatar"
                     />
@@ -26,10 +26,12 @@
         <q-separator />
         <q-card-section>
           <div class="text-center">
-            <div class="text-h6">Nome</div>
-            <div class="text-h6 text-weight-light">{{ userData.nickname }}</div>
+            <div class="text-h6">{{ userDatum[0].nickname }}</div>
+            <div class="text-h6 text-weight-light">
+              {{ userID[0] }}
+            </div>
             <div class="text-subtitle2 text-weight-thin">
-              Level {{ userData.level }}
+              {{ userDatum[0].level }}
             </div>
           </div>
         </q-card-section>
@@ -37,7 +39,7 @@
         <q-card-section>
           <div class="text-center">
             <div class="text-h6">Bio</div>
-            <div class="text-body1">{{ userData.bio }}</div>
+            <div class="text-body1"></div>
           </div>
         </q-card-section>
         <q-separator />
@@ -113,7 +115,13 @@ export default {
     ...mapActions(["fetchUser", "seeFriendData"])
   },
 
-  computed: mapGetters(["userData", "allUserFriends", "allUserBestFriends"]),
+  computed: mapGetters([
+    "userID",
+    "userName",
+    "userDatum",
+    "allUserFriends",
+    "allUserBestFriends"
+  ]),
   created() {
     this.seeFriendData();
     this.fetchUser();

@@ -17,7 +17,7 @@ const getters = {
 };
 
 const actions = {
-  fetchUser({ commit }) {
+  async fetchUser({ commit }) {
     return new Promise(() => {
       http({
         url: `users/normal/dataview/id?id=${id}`,
@@ -36,6 +36,30 @@ const actions = {
         commit("userNameData", userData.userName);
         commit("userDatumData", userData.userDatum);
       });
+    }).catch(error => {
+      commit("userDataError");
+      throw error;
+    });
+  },
+  async sendUserData({ commit }) {
+    return new Promise((resolve, reject) => {
+      http({
+        url: `users/normal/dataview/id?id=${id}`,
+        method: "PATCH",
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      })
+        .then(response => {
+          const userDatum = response.data.userd.map(user => user.userDatum);
+          commit("userDatumData", userDatum);
+          console.log(userDatum);
+          resolve(response);
+        })
+        .catch(err => {
+          commit("userDataError");
+          reject(err);
+        });
     });
   }
 };
@@ -52,6 +76,9 @@ const mutations = {
   userDatumData(state, userDatum) {
     state.status = "userDatumSucess";
     state.userDatum = userDatum;
+  },
+  userDataError(state) {
+    state.status = "error";
   }
 };
 
