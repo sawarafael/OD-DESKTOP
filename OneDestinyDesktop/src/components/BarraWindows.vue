@@ -1,13 +1,18 @@
 <template>
-  <q-bar class="bg-primary text-white">
-    <div class="col text-center text-weight-bold">
-      One Destiny Desktop App
+  <div>
+    <q-bar class="windows-bar bg-primary text-white fixed-top q-electron-drag">
+      <div class="col text-center text-weight-bold">
+        One Destiny Desktop App
+      </div>
+      <q-space />
+      <q-btn dense flat icon="minimize" @click="minimize" />
+      <q-btn dense flat icon="crop_square" @click="maximize" />
+      <q-btn dense flat icon="close" @click="closeApp" />
+    </q-bar>
+    <div class="spacer">
+      &nbsp;
     </div>
-    <q-space />
-    <q-btn dense flat icon="minimize" @click="minimize" />
-    <q-btn dense flat icon="crop_square" @click="maximize" />
-    <q-btn dense flat icon="close" @click="closeApp" />
-  </q-bar>
+  </div>
 </template>
 
 <script>
@@ -48,4 +53,12 @@ export default {
 };
 </script>
 
-<style></style>
+<style scoped>
+.windows-bar {
+  z-index: 10;
+}
+.spacer {
+  width: 100%;
+  height: 30px;
+}
+</style>
