@@ -72,30 +72,7 @@ const actions = {
         });
     });
   },
-
-  requestFriend({ commit }, num) {
-    return new Promise((resolve, reject) => {
-      commit("friendData_status_request");
-
-      /*
-            http({
-                url: `users/normal/friend/request`,
-                method: "POST",
-                data: num,
-                headers: {
-                    'Authorization': `${token}`
-                }
-            })
-              .then(resp => {
-                  resolve(resp);
-              })
-              .catch(err => {
-                  reject(err)
-              })
-              */
-    });
-  },
-
+  
   addFriend({ commit }, add) {
     return new Promise((resolve, reject) => {
       commit("friendData_status_request");
