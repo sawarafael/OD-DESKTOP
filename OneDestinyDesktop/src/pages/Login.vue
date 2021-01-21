@@ -45,18 +45,24 @@
             <q-form @submit.prevent="login" class="q-gutter-md">
               <q-input
                 filled
-                clearable
                 v-model="username"
                 type="username"
                 label="Usuário"
               />
               <q-input
-                filled
-                clearable
                 v-model="password"
-                type="password"
+                filled
+                :type="isPwd ? 'password' : 'text'"
                 label="Senha"
-              />
+              >
+                <template v-slot:append>
+                  <q-icon
+                    :name="isPwd ? 'visibility_off' : 'visibility'"
+                    class="cursor-pointer"
+                    @click="isPwd = !isPwd"
+                  />
+                </template>
+              </q-input>
               <q-btn
                 unelevated
                 class="full-width text-weight-light"
@@ -80,13 +86,15 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
 export default {
   name: "Login",
   data() {
     return {
       slide: 1,
       username: "",
-      password: ""
+      password: "",
+      isPwd: true
     };
   },
   methods: {
@@ -98,6 +106,7 @@ export default {
         .then(() => this.$router.push("/main/main"))
         .catch(err => console.log(err));
     }
-  }
+  },
+  computed: mapGetters(["authStatus"])
 };
 </script>

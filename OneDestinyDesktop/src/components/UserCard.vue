@@ -21,12 +21,12 @@
       </div>
     </q-card-section>
     <q-card-section class="q-pa-md q-ma-md">
-      <div class="text-h6">{{ userData.nickname }}</div>
-      <div class="text-subtitle2 ">Level: {{ userData.level }}</div>
+      <div class="text-h6">{{ userDatum[0].nickname }}</div>
+      <div class="text-subtitle2 ">Level: {{ userDatum[0].level }}</div>
     </q-card-section>
     <q-card-section>
       <div class="text-subtitle1">Bio</div>
-      <div class="text-body2">{{ userData.bio }}</div></q-card-section
+      <div class="text-body2">{{ userDatum[0].bio }}</div></q-card-section
     >
     <q-card-actions align="right">
       <q-btn v-close-popup flat color="primary" label="Fechar" />
@@ -46,7 +46,7 @@ import { mapGetters, mapActions } from "vuex";
 
 export default {
   computed: {
-    ...mapGetters(["userData"])
+    ...mapGetters(["userID", "userName", "userDatum"])
   },
   methods: {
     ...mapActions(["fetchUser"])

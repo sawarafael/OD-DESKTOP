@@ -1,8 +1,11 @@
 import axios from "axios";
 // import Store from "./../../store";
 
+// const acessToken =
+//   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywidXNlcm5hbWUiOiJIYXJ1IiwiaWF0IjoxNjEwODI1MTA3LCJleHAiOjE2MTA5OTc5MDd9.mLks53olu3mWMqwVFtM9d16dnlRj_DGRUsSAKF69m38";
+
 const http = axios.create({
-  baseURL: "http://localhost:54213/",
+  baseURL: "http://31.220.52.152:54213/",
   headers: {
     Accept: "application/json",
     Content: "application/json"
@@ -10,15 +13,12 @@ const http = axios.create({
 });
 
 // http.interceptors.request.use(
-//   function(config) {
-//     const token = Store.state.token;
-//     if (token) {
-//       config.headers.Authorization = `Bearer ${token}`;
-//     }
+//   config => {
+//     config.headers.authorization = `${acessToken}`;
 //     return config;
 //   },
-//   function(err) {
-//     return Promise.reject(err);
+//   error => {
+//     return Promise.reject(error);
 //   }
 // );
 
