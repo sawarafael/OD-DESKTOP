@@ -7,11 +7,11 @@
       <div class="col-10">
         <div class="q-pl-xl q-pr-xl">
           <q-toolbar class="bg-primary text-white shadow-2 rounded-borders">
-            <q-tabs shrink stretch>
-              <q-tab name="" label="Destaques" />
-              <q-tab name="" label="Novas"/>
-              <q-tab name="" label="Recomendações" />
-              <q-tab name="" label="De Amigos" />
+            <q-tabs shrink stretch v-model="tab">
+              <q-tab name="des" label="Destaques" />
+              <q-tab name="nov" label="Novas"/>
+              <q-tab name="rec" label="Recomendações" />
+              <q-tab name="dea" label="De Amigos" />
             </q-tabs>
             <q-space />
             <q-input color="white" outlined label="Pesquisar por uma mesa" >
@@ -63,6 +63,7 @@ export default {
   components: { ActiveNavbar },
   data () {
     return {
+      tab: "des",
       slide: 'style',
       controlType: 'flat'
     }

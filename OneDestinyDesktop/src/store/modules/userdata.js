@@ -23,7 +23,7 @@ const actions = {
         url: `users/normal/dataview/id?id=${id}`,
         method: "GET",
         headers: {
-          Authorization: `Bearer ${token}`
+          Authorization: `${token}`
         }
       }).then(resp => {
         const userData = {
@@ -47,7 +47,7 @@ const actions = {
         url: `users/normal/dataview/id?id=${id}`,
         method: "PATCH",
         headers: {
-          Authorization: `Bearer ${token}`
+          Authorization: `${token}`
         }
       })
         .then(response => {
