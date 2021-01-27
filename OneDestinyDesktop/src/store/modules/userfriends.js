@@ -148,38 +148,22 @@ const actions = {
 
   requestFriend({ commit }, num) {
         return new Promise((resolve, reject) => {
-            commit("friendData_status_request");   
-
+            commit("friendData_status_request");  
             http({ 
-                url: `users/normal/friend/view/all/?id=${id}`,
-                method: "GET",
+                url: `users/normal/friend/request`,
+                method: "POST",
+                data: num,
                 headers: {
-                    'Authorization': `${token}`
+                  'Authorization': `${token}`
                 }
-            }).then((e) => {
-      
-              e.data.friendL.filter(et => {
-                if(et.useridrelacao === 5) {                  
-                    http({
-                        url: `users/normal/friend/request`,
-                        method: "POST",
-                        data: num,
-                        headers: {
-                              'Authorization': `${token}`
-                        }
-                    })
-                    .then(resp => {
-                        resolve(resp);
-                    })
-                    .catch(err => {
-                        reject(err)
-                    })
-                } else {
-                  console.log("n existe")
-                }
-              })      
             })
-          })  
+              .then(resp => {
+                resolve(resp);
+              })
+              .catch(err => {
+                reject(err);
+              })
+        })  
   },
   
   addFriend({ commit }, add) {
@@ -190,7 +174,7 @@ const actions = {
         method: "PATCH",
         data: add,
         headers: {
-          Authorization: `${token}`
+          'Authorization': `${token}`
         }
       })
         .then(resp => {
@@ -210,7 +194,7 @@ const actions = {
         method: "PATCH",
         data: add,
         headers: {
-          Authorization: `${token}`
+         'Authorization': `${token}`
         }
       })
         .then(resp => {
@@ -230,7 +214,7 @@ const actions = {
         method: "PATCH",
         data: ref,
         headers: {
-          Authorization: `${token}`
+          'Authorization': `${token}`
         }
       })
         .then(resp => {
@@ -289,37 +273,17 @@ const actions = {
           })
         })  
       })
-  },
-
-  downgradeFriend({ commit }, upg) {
-    return new Promise((resolve, reject) => {
-      commit("friendData_status_request");
-      http({
-        url: `users/normal/bestfriend/update/2`,
-        method: "PATCH",
-        data: upg,
-        headers: {
-          Authorization: `${token}`
-        }
-      })
-        .then(resp => {
-          resolve(resp);
-        })
-        .catch(err => {
-          reject(err);
-        });
-    });
-  },
+  },  
 
   blockFriend({ commit }, blo) {
     return new Promise((resolve, reject) => {
       commit("friendData_status_request");
       http({
-        url: `users/normal/friend/update/4`,
+        url: `users/normal/friend/update/6`,
         method: "PATCH",
         data: blo,
         headers: {
-          Authorization: `${token}`
+          'Authorization': `${token}`
         }
       })
         .then(resp => {

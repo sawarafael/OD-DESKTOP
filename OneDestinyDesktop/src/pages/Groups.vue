@@ -1,9 +1,8 @@
 <template>
-    <div>       
-
+    <div> 
         <div class="q-pl-xl on-top col">            
             <q-btn label="Adicionar um Usuário" @click="findAndAddFriend = true"/>
-            <q-btn label="Bloquear um Usuário"/>
+            <q-btn label="Bloquear um Usuário" @click="findAndBlockFriend = true"/>
         </div>
 
         <div>
@@ -164,6 +163,35 @@
                     </div>
                 </q-card>
         </q-dialog>
+        
+        <q-dialog v-model="findAndBlockFriend">
+                <q-card>
+                    <div>
+                    <q-form @submit="blockThatFriend">
+                        Bloqueie um Usuário.
+                        <q-input 
+                        filled 
+                        clearable
+                        v-model="idTwo"
+                        label="Id do Usuário"
+                        />
+                        <q-input
+                        filled
+                        cleareble
+                        label="Username do Usuário"
+                        />
+                        <q-btn
+                        unelevated
+                        class="full-width text-weight-light"
+                        size="lg"
+                        color="indigo-10"
+                        type="submit"
+                        label="Bloquear este Usuário"
+                        />
+                    </q-form>
+                    </div>
+                </q-card>
+        </q-dialog>
 
     </div>
 </template>
@@ -181,7 +209,9 @@ export default {
         return {
             tab : "amizades",
             findAndAddFriend: false,
+            findAndBlockFriend: false,
             id2: "",
+            idTwo: "",
             username: ""
         }
     },
@@ -199,7 +229,7 @@ export default {
                 id2 : this.id2,
                 username: this.username
             }
-            location.reload();
+            
             this.requestFriend(reqFriends);
         },        
         addThatFriend(idr) {
@@ -242,6 +272,22 @@ export default {
             }; 
             this.acceptBFriend(acceptFriend);
             location.reload();
+        },
+        refThatFriend(idr) {
+            const refFriend = {
+                id1: idUser,
+                idr: idr
+            };
+            this.refuseFriend(refFriend)
+            location.reload()
+        },
+        blockFriend() {
+            const blockFriend = {
+                id1 : idUser,
+                idr : this.idTwo
+            }
+            console.log(blockFriend)
+            // this.blockThatFriend(blockFriend)
         }
     },
 
