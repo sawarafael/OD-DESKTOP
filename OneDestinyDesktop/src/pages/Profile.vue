@@ -39,7 +39,7 @@
         <q-card-section>
           <div class="text-center">
             <div class="text-h6">Bio</div>
-            <div class="text-body1"></div>
+            <div class="text-body1">{{ userDatum[0].bio }}</div>
           </div>
         </q-card-section>
         <q-separator />

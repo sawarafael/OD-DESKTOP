@@ -23,7 +23,7 @@ const actions = {
         url: `users/normal/dataview/id?id=${id}`,
         method: "GET",
         headers: {
-          Authorization: `Bearer ${token}`
+          Authorization: `${token}`
         }
       }).then(resp => {
         const userData = {
@@ -41,19 +41,18 @@ const actions = {
       throw error;
     });
   },
-  async sendUserData({ commit }) {
+  async sendUserData({ commit }, userDatum) {
     return new Promise((resolve, reject) => {
       http({
-        url: `users/normal/dataview/id?id=${id}`,
+        url: `users/normal/datachange/${id}`,
         method: "PATCH",
+        data: userDatum,
         headers: {
-          Authorization: `Bearer ${token}`
+          Authorization: `${token}`
         }
       })
         .then(response => {
-          const userDatum = response.data.userd.map(user => user.userDatum);
-          commit("userDatumData", userDatum);
-          console.log(userDatum);
+          commit("userDatumData");
           resolve(response);
         })
         .catch(err => {
