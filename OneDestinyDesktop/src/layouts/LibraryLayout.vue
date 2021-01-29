@@ -1,16 +1,17 @@
 <template>
-    <q-layout>
-        <GeneralNavbar />
+  <q-layout>
+    <BarraWindows />
+    <GeneralNavbar />
     <q-page-container>
-        <router-view />
+      <router-view />
     </q-page-container>
-    </q-layout>
+  </q-layout>
 </template>
 <script>
-
-import GeneralNavbar from 'components/GeneralNavbar.vue'
+import GeneralNavbar from "components/GeneralNavbar.vue";
+import BarraWindows from "components/BarraWindows.vue";
 export default {
-  name: 'LibraryLayout',
-  components: { GeneralNavbar }
-}
+  name: "MainLayout",
+  components: { GeneralNavbar, BarraWindows }
+};
 </script>

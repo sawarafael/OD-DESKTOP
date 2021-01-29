@@ -3,7 +3,7 @@
     <q-card-section>
       <div class="col-6">
         <q-img
-          src="https://pbs.twimg.com/media/Eljq4M_WoAAWHQp.jpg"
+          v-bind:src="userDatum[0].coverPage"
           class="cover-image"
           native-context-menu
         />
@@ -11,7 +11,7 @@
           <q-btn round class="absolute" style="top: 160px; right: 220px;">
             <q-avatar size="5em">
               <img
-                src="https://i.pinimg.com/564x/84/e2/49/84e2493bf512671ce27e6f86abc03e7d.jpg"
+                v-bind:src="userDatum[0].avatar"
                 alt="Seu avatar"
                 class="user-avatar"
               />
