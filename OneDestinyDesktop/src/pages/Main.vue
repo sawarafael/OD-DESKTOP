@@ -33,7 +33,7 @@
           navigation
           padding
           arrows
-          height="700px"
+          height="500px"
           class="text-purple rounded-borders"
           >
           <q-carousel-slide>

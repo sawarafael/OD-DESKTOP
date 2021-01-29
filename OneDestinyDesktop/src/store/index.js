@@ -3,7 +3,7 @@ import Vuex from "vuex";
 import auth from "./modules/auth";
 import userf from "./modules/userfriends";
 import userdata from "./modules/userdata";
-import room from "./modules/room";
+import library from "./modules/library";
 import progressbar from "./modules/progress-bar";
 // import VuexPersistence from "vuex-persist";
 
@@ -28,7 +28,7 @@ export default function(/* { ssrContext } */) {
       auth,
       userf,
       userdata,
-      room,
+      library,
       progressbar
     },
     // enable strict mode (adds overhead!)

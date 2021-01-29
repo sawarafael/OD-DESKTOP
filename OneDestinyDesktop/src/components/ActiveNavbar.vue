@@ -1,9 +1,5 @@
 <template>
-    <div>
-        <q-splitter
-        v-model="splitterModel"
-        style="height: 790px"
-        >
+    <div>        
         <q-tabs
         vertical
         class="text-primary"
@@ -21,7 +17,6 @@
             </q-img>
         </q-tab>
         </q-tabs>
-        </q-splitter>
     </div>
 
 </template>

@@ -285,7 +285,7 @@ export default {
             const blockFriend = {
                 id1 : idUser,
                 idr : this.idTwo
-            }
+            }   
             console.log(blockFriend)
             // this.blockThatFriend(blockFriend)
         }
