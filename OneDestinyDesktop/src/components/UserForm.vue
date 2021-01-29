@@ -18,14 +18,9 @@
         <div class="text-subtitle2 q-px-sm text-primary">
           Biografia
         </div>
-        <q-input
-          outlined
-          v-model="userDatum.bio"
-          type="textarea"
-          filled
-          :rules="[val => val.length <= 140 || 'No maximo 140 caracteres']"
-        />
+        <q-input outlined v-model="userDatum.bio" type="textarea" filled />
         <div class="text-subtitle2 q-px-sm text-primary">Avatar do perfil</div>
+        <span>Enviar arquivo</span>
         <q-file
           v-model="userDatum.avatar"
           filled
@@ -33,7 +28,16 @@
           use-chips
           style="max-width: 300px"
         />
+        <span>Link</span>
+        <q-input
+          outlined
+          v-model="userDatum.avatar"
+          type="text"
+          style="max-width: 300px"
+          filled
+        />
         <div class="text-subtitle2 q-px-sm text-primary">Capa de perfil</div>
+        <span>Enviar arquivo</span>
         <q-file
           v-model="userDatum.coverPage"
           filled
@@ -41,21 +45,21 @@
           use-chips
           style="max-width: 300px"
         />
+        <span>Link</span>
+        <q-input
+          outlined
+          filled
+          v-model="userDatum.coverPage"
+          type="text"
+          style="max-width: 300px"
+        />
+
+        <q-btn flat label="Salvar" color="primary" type="submit" />
+        <q-btn flat label="Fechar" color="primary" v-close-popup />
       </q-form>
     </q-card-section>
 
     <q-separator />
-
-    <q-card-actions align="right">
-      <q-btn flat label="Fechar" color="primary" v-close-popup />
-      <q-btn
-        flat
-        label="Confirmar"
-        color="primary"
-        type="submit"
-        v-close-popup
-      />
-    </q-card-actions>
   </q-card>
 </template>
 
@@ -72,6 +76,7 @@ export default {
       const userDatum = this.userDatum;
       this.$store
         .dispatch("sendUserData", userDatum)
+        .then(location.reload())
         .catch(error => console.log(error));
     },
     onReset: function() {

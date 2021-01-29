@@ -1,6 +1,7 @@
 <template>
   <q-layout view="hHh lpR fFf">
     <q-header elevated class="bg-indigo-10 text-white">
+      <barra-windows></barra-windows>
       <q-toolbar>
         <q-toolbar-title class="text-weight-light">
           <q-avatar>
@@ -24,9 +25,14 @@
 </template>
 
 <script>
+import BarraWindows from "../components/BarraWindows.vue";
 export default {
+  components: { BarraWindows },
   data() {
     return {};
   }
 };
 </script>
+<style>
+  
+</style>
