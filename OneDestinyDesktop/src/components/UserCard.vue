@@ -51,8 +51,8 @@ export default {
   methods: {
     ...mapActions(["fetchUser"])
   },
-  created() {
-    this.fetchUser();
+  async created() {
+    await this.fetchUser();
   }
 };
 </script>
