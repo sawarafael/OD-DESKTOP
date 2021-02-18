@@ -57,16 +57,19 @@
 
 <script>
 import ActiveNavbar from '../components/ActiveNavbar.vue'
-
+import { mapActions } from 'vuex'
 export default {
   name: 'PageIndex',
-  components: { ActiveNavbar },
+  components: { ActiveNavbar }, 
   data () {
     return {
       tab: "des",
       slide: 'style',
       controlType: 'flat'
     }
+  },
+  methods: {
+    ...mapActions(["isThisUserOnline"])
   }
 }
 </script>

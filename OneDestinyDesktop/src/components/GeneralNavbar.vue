@@ -10,7 +10,7 @@
         />
         <q-space />
         <q-tabs shrink stretch>
-          <q-tab name="Grupos" label="Grupos" @click="friends = true" />
+          <q-tab name="Grupos" label="Grupos" @click="drawerRight = !drawerRight" />
           <q-tab name="Perfil" label="Perfil" @click="userCard = true" />
           <q-tab name="Notifications" icon="notifications">
             <q-menu>
@@ -51,31 +51,16 @@
       </q-dialog>
 
       <!-- LISTA DE AMIGS -->
-      <q-dialog v-model="friends">
-        <q-card style="width: 650px">
-          <q-card-section class="items-center no-wrap">
-            Amigos Onlines
-            <div v-for="userFriend in allUserFriends" :key="userFriend.id">
-              <div class="row">
-                <q-avatar>
-                  <img v-bind:src="userFriend.userdatum.avatar" alt="" />
-                </q-avatar>
-                <p>{{ userFriend.username }}</p>
-              </div>
-            </div>
-            <hr />
-            <div>
-              Grupos de Conversa
-              <div>
-                <q-btn
-                  label="Ir aos Grupos de Amigos"
-                  @click="$router.push('/groups/groups')"
-                />
-              </div>
-            </div>
-          </q-card-section>
-        </q-card>
-      </q-dialog>
+      <q-drawer
+      side="right" 
+      class="friendList"
+      v-model="drawerRight"
+      :width="250"
+      :breakpoint="1100"
+      content-class="bg-primary text-white"
+      >
+        <friend-list />     
+      </q-drawer>  
     </div>
   </div>
 </template>
@@ -86,15 +71,15 @@
 
 import { mapGetters, mapActions } from "vuex";
 import UserCard from "./UserCard.vue";
-
+import FriendList from "./FriendList"
 export default {
-  components: { UserCard },
+  components: { UserCard, FriendList },
   data() {
     return {
       userdatum: {},
       tags: {},
       userCard: false,
-      friends: false
+      drawerRight: false
     };
   },
 
@@ -108,9 +93,6 @@ export default {
     }
   },
 
-  computed: mapGetters(["allUserFriends", "userDatum", "userName"]),
-  created() {
-    this.fetchUser();
-  }
+  computed: mapGetters(["userDatum", "userName"]),
 };
 </script>

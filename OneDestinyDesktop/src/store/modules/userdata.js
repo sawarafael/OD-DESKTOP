@@ -5,7 +5,7 @@ const token = localStorage.getItem("token");
 
 const state = {
   userID: {},
-  userName: {},
+  userName: "",
   userDatum: {},
   status: ""
 };
@@ -30,11 +30,12 @@ const actions = {
           userID: resp.data.userd.map(user => user.id),
           userName: resp.data.userd.map(user => user.username),
           userDatum: resp.data.userd.map(user => user.userdatum)
-        };
-        console.log(userData);
+        };        
         commit("userIDData", userData.userID);
-        commit("userNameData", userData.userName);
+        commit("userNameData", resp.data.userd.map(user => user.username));
         commit("userDatumData", userData.userDatum);
+
+        this.$socket.emit('usersConnected', resp.data.userd.map(user => user.username))
       });
     }).catch(error => {
       commit("userDataError");

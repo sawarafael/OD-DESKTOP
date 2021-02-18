@@ -38,6 +38,12 @@ const routes = [
   // Always leave this as last one,
   // but you can also remove it
   {
+    path: "/chat",
+    component: () => import("layouts/ChatLayout.vue"),
+    children: [{ path: "chat", component: () => import("pages/Chat") }]
+  },
+
+  {
     path: "*",
     component: () => import("pages/Error404.vue")
   }

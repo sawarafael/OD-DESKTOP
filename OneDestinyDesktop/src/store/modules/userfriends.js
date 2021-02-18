@@ -130,14 +130,13 @@ const actions = {
           commit("requestFriend_view", getAllRequests(id, resp.data.friendL, resp.data.friendData))
           commit("requestsBestFriend_view", getAllBFRequests(id, respo.data.bfriendList, respo.data.bfriendData))
           commit("friendData_view", getAllFriends(id, resp.data.friendL, resp.data.friendData))
-          commit("friendData_best_view", getAllBestFriends(id, resp.data.friendL, resp.data.friendData))
+          commit("friendData_best_view", getAllBestFriends(id, resp.data.friendL, resp.data.friendData))       
 
-          
+          this.$socket.emit('userFriendsConnected', getAllFriends(id, resp.data.friendL, resp.data.friendData))
 
-          console.log(respo.data)
-          console.log("     ")
-          console.log(getAllBFRequests(id, respo.data.bfriendList, respo.data.bfriendData))
-          console.log("     ")
+          this.$socket.on('userfr', (test) => {
+            console.log(test)
+          })
         })
            }) 
            .catch(err => {
@@ -293,7 +292,7 @@ const actions = {
           reject(err);
         });
     });
-  }
+  },
 };
 
 const mutations = {

@@ -1,4 +1,4 @@
-import { app, BrowserWindow, nativeTheme } from "electron";
+import { app, BrowserWindow, ipcMain, nativeTheme } from "electron";
 
 try {
   if (
@@ -51,6 +51,28 @@ function createWindow() {
     mainWindow = null;
   });
 }
+
+ipcMain.on('open-chat-window', (event) => {
+  const janelasChat = []
+  const chatWindow = new BrowserWindow({ 
+    width: 750,
+    height: 650,
+    frame: false,
+    useContentSize: true,
+    autoHideMenuBar: true,
+    webPreferences: {
+        nodeIntegration: process.env.QUASAR_NODE_INTEGRATION,
+        nodeIntegrationInWorker: process.env.QUASAR_NODE_INTEGRATION
+    },   
+    backgroundColor: "#1d1d1d"
+  })
+
+  chatWindow.loadURL(process.env.APP_URL + '#/chat/chat')
+
+  janelasChat.push(chatWindow)
+  event.reply('Janela de Chat Aberta')
+})
+
 
 app.on("ready", createWindow);
 
