@@ -1,7 +1,7 @@
 <template>
   <div class="q-pa-md">
     <div>
-      <q-toolbar class="bg-primary text-white shadow-2 rounded-borders">
+      <q-toolbar class="navbar-gen bg-primary text-white rounded-borders">
         <q-btn flat label="Aventuras" @click="$router.push('/Main/main')" />
         <q-btn
           flat
@@ -12,7 +12,7 @@
         <q-tabs shrink stretch>
           <q-tab name="Grupos" label="Grupos" @click="friends = true" />
           <q-tab name="Perfil" label="Perfil" @click="userCard = true" />
-          <q-tab name="Notifications" icon="notifications">
+          <q-tab name="Notifications" icon="notifications" @click="showNotif()">
             <q-menu>
               <q-list style="min-width: 100px">
                 <q-item>
@@ -99,18 +99,41 @@ export default {
   },
 
   methods: {
-    ...mapActions(["fetchUser"]),
+    ...mapActions(["fetchUser", "fetchRoomPlaying"]),
     logout: function() {
       this.$store.dispatch("logout").then(this.$router.push("/"));
     },
     turnOnDarkMode: function() {
       this.$q.dark.toggle();
+    },
+    showNotif() {
+      console.log("funcionou!");
+      const test = this.roomStatus;
+      console.log(test);
+      if (test === "error") {
+        this.$q.notify({
+          message: "Infelizmente não foi possível mostrar os dados do usuário.",
+          color: "red"
+        });
+      }
     }
   },
 
-  computed: mapGetters(["allUserFriends", "userDatum", "userName"]),
+  computed: mapGetters([
+    "allUserFriends",
+    "userDatum",
+    "userName",
+    "roomStatus"
+  ]),
   created() {
     this.fetchUser();
+    this.showNotif();
+    this.fetchRoomPlaying();
   }
 };
 </script>
+
+<style lang="sass" scoped>
+.navbar-gen
+  box-shadow: rgba(0, 0, 0, 0.25) 0px 14px 28px, rgba(0, 0, 0, 0.22) 0px 10px 10px
+</style>
